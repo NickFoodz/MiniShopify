@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shops</title>
+</head>
+<body>
+<h1>All Shops</h1>
+
+<a href="/gui/">Back to Home</a>
+<hr>
+
+<form th:action="@{/gui/shops}" method="post">
+    <input type="text" name="name" placeholder="Shop name" required>
+    <button type="submit">Add Shop</button>
+</form>
+
+<ul>
+    <li th:each="shop : ${shops}" th:text="${shop.name}"></li>
+</ul>
+</body>
+</html>
