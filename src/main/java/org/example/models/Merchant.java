@@ -17,6 +17,9 @@ public class Merchant {
     @OneToMany(mappedBy = "merchant", cascade = CascadeType.ALL)
     private List<Shop> shops;
 
+    public Merchant() {
+    }
+
     // Getters and Setters
 
     // Getter for ID

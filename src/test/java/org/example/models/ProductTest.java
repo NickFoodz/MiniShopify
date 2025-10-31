@@ -6,10 +6,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for Product model
+ * @author Nick Fuda
+ * @version 1.0
+ */
 class ProductTest {
 
     @BeforeEach
     void setUp() {
+        Product product = new Product();
     }
 
     @AfterEach
