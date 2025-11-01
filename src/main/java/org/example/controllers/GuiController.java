@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/gui")
 public class GuiController {
@@ -53,14 +56,35 @@ public class GuiController {
     public String addProduct(@RequestParam String name,
                              @RequestParam String description,
                              @RequestParam double price,
-                             @RequestParam int stock) {
-        Product product = new Product();
-        product.setName(name);
-        product.setDescription(description);
-        product.setPrice(price);
-        product.setStock(stock);
+                             @RequestParam int stock,
+                             @RequestParam int shopID) {
+
+        long id = shopID;
+
+        if (shopRepository.findById(id).isPresent()){
+            Product product = new Product();
+            product.setName(name);
+            product.setDescription(description);
+            product.setPrice(price);
+            product.setStock(stock);
+            Shop shop = shopRepository.findById(id).get();
+            //productRepository.save(product);
+            product.setShop(shop);
+            shop.addProduct(product);
+            shopRepository.save(shop);
+
+            return "redirect:/gui/shops";
+        } else {
+
+            // some error redirect
+
+            return "redirect:/error";
+
+        }
+
+
         // After adding product, needs to be added to shop and displayed (Someone can work on this from here)
-        productRepository.save(product);
-        return "redirect:/gui/";
+        // productRepository.save(product);
+        // return "redirect:/gui/";
     }
 }

@@ -24,7 +24,6 @@ public class ShopAppApplication {
     @Bean
     public CommandLineRunner linkToLocalHost() {
         return args -> {
-
             log.info("\n=== Application Ready ===");
             log.info("Web interface: http://localhost:8080/");
         };

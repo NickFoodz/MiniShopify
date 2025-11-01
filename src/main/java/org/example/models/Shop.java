@@ -17,7 +17,7 @@ public class Shop {
     @ElementCollection
     private List<String> categories = new ArrayList<String>();
 
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Product> products = new ArrayList<Product>();
 
     @ManyToOne
@@ -74,7 +74,7 @@ public class Shop {
     }
 
     public void addProduct(Product product) {
-        this.products.add(product);
+        this.products.add(product);product.setShop(this);
     }
 }
 
