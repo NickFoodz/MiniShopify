@@ -1,0 +1,65 @@
+@startuml MiniShopify Models
+
+' Model Classes
+entity Merchant {
+  - Long id
+  - String name
+  - String email
+  - List<Shop> shops
+  --
+  + Long getId()
+  + void setId(Long id)
+  + String getName()
+  + void setName(String name)
+  + String getEmail()
+  + void setEmail(String email)
+  + List<Shop> getShops()
+  + void setShops(List<Shop> shops)
+}
+
+entity Shop {
+  - Long id
+  - String name
+  - List<String> categories
+  - List<Product> products
+  - Merchant merchant
+  --
+  + Long getId()
+  + void setId(Long id)
+  + String getName()
+  + void setName(String name)
+  + List<String> getCategories()
+  + void addCategory(String category)
+  + Merchant getMerchant()
+  + void setMerchant(Merchant merchant)
+  + List<Product> getProducts()
+  + void addProduct(Product product)
+}
+
+entity Product {
+  - Long id
+  - String name
+  - String description
+  - double price
+  - int stock
+  - Shop shop
+  --
+  + Long getId()
+  + void setId(Long id)
+  + String getName()
+  + void setName(String name)
+  + String getDescription()
+  + void setDescription(String description)
+  + double getPrice()
+  + void setPrice(double price)
+  + int getStock()
+  + void setStock(int stock)
+  + Shop getShop()
+  + void setShop(Shop shop)
+}
+
+' Relationships
+Merchant "1" -- "0..*" Shop : owns >
+Shop "1" -- "0..*" Product : contains >
+
+@enduml
