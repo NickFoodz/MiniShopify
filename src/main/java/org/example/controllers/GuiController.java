@@ -1,7 +1,9 @@
 package org.example.controllers;
 
+import org.example.models.Merchant;
 import org.example.models.Product;
 import org.example.models.Shop;
+import org.example.repository.MerchantRepository;
 import org.example.repository.ProductRepository;
 import org.example.repository.ShopRepository;
 import org.springframework.stereotype.Controller;
@@ -17,10 +19,12 @@ public class GuiController {
 
     private final ShopRepository shopRepository;
     private final ProductRepository productRepository;
+    private final MerchantRepository merchantRepository;
 
-    public GuiController(ShopRepository shopRepository, ProductRepository productRepository) {
+    public GuiController(ShopRepository shopRepository, ProductRepository productRepository, MerchantRepository merchantRepository) {
         this.shopRepository = shopRepository;
         this.productRepository = productRepository;
+        this.merchantRepository = merchantRepository;
     }
 
     // Home page
@@ -82,9 +86,63 @@ public class GuiController {
 
         }
 
-
         // After adding product, needs to be added to shop and displayed (Someone can work on this from here)
         // productRepository.save(product);
         // return "redirect:/gui/";
     }
+
+    /**
+     * Remove product from the shop
+     * @param productId the product id to remove
+     * @param shopId the shop id to remove product from
+     * @return back to the shops page
+     */
+    @PostMapping("/remove-product")
+    public String removeProduct(@RequestParam long productId,
+                                @RequestParam long shopId) {
+
+        try {
+            Shop shop = shopRepository.findById(shopId).
+                    orElseThrow(() -> new IllegalArgumentException("Shop not found"));
+            Product product = productRepository.findById(productId).
+                    orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+            //Remove relationship
+            shop.removeProduct(product.getId());
+            //Delete the product
+            productRepository.delete(product);
+            shopRepository.save(shop);
+
+            return "redirect:/gui/shops";
+        }catch (IllegalArgumentException e){
+            return "redirect:/error";
+        }
+
+    }
+
+    /**
+     * Removes a shop from the repository.
+     * @param shopId the shop id to remove
+     * @return to the shops page
+     */
+    @PostMapping("/remove-shop")
+    public String removeShop(@RequestParam long shopId) {
+        //Need to add merchant id at some point if multiple exist
+        try{
+            //Add merchant here similar to below
+            Shop shop = shopRepository.findById(shopId).
+                    orElseThrow(() -> new IllegalArgumentException("Shop not found"));
+
+            //Remove relationship from merchant (when eventually exists)
+            //merchant.removeShop(shop.getName());
+            //Delete Shop
+            shopRepository.delete(shop);
+
+            return "redirect:/gui/shops";
+
+        } catch (IllegalArgumentException e){
+            return "redirect:/error";
+        }
+    }
+
 }

@@ -189,4 +189,248 @@ class GuiControllerIntegrationTest {
                 .andExpect(content().string(containsString("Phone")))
                 .andExpect(content().string(containsString("Tablet")));
     }
+
+    /**
+     * Tests if removing a product was successful
+     */
+    @Test
+    void testRemoveProductSuccess() throws Exception {
+        // Create and save a shop
+        Shop shop = new Shop();
+        shop.setName("Electronics Store");
+        Shop savedShop = shopRepository.save(shop);
+
+        // Create and add a product to the shop
+        Product product = new Product();
+        product.setName("Laptop");
+        product.setDescription("Gaming laptop");
+        product.setPrice(1299.99);
+        product.setStock(10);
+        product.setShop(savedShop);
+        savedShop.addProduct(product);
+        shopRepository.save(savedShop);
+
+        // Get the product ID for removal
+        Product savedProduct = productRepository.findAll().iterator().next();
+
+        // Perform POST request to remove the product
+        mockMvc.perform(post("/gui/remove-product")
+                        .param("productId", savedProduct.getId().toString())
+                        .param("shopId", savedShop.getId().toString()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/gui/shops"));
+
+        // Verify the product was deleted from repository
+        assertFalse(productRepository.existsById(savedProduct.getId()));
+
+        // Verify the shop still exists
+        assertTrue(shopRepository.existsById(savedShop.getId()));
+
+        // Verify the product was removed from shop's product list
+        Shop updatedShop = shopRepository.findById(savedShop.getId()).get();
+        assertEquals(0, updatedShop.getProducts().size());
+    }
+
+
+    /**
+     * Tests the behavior of removeProduct() - product not found
+     */
+    @Test
+    void testRemoveProductNotFound() throws Exception {
+        // Create and save a shop
+        Shop shop = new Shop();
+        shop.setName("Electronics Store");
+        Shop savedShop = shopRepository.save(shop);
+
+        // Attempt to remove a non-existent product (ID 999)
+        mockMvc.perform(post("/gui/remove-product")
+                        .param("productId", "999")
+                        .param("shopId", savedShop.getId().toString()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/error"));
+    }
+
+    /**
+     * Tests the behavior of removeProduct() - shop not found
+     */
+    @Test
+    void testRemoveProductShopNotFound() throws Exception {
+        // Attempt to remove a product from a non-existent shop (ID 999)
+        mockMvc.perform(post("/gui/remove-product")
+                        .param("productId", "1")
+                        .param("shopId", "999"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/error"));
+    }
+
+    /**
+     * Tests the behavior of removeProduct() - removes correct product when multiple exist
+     */
+    @Test
+    void testRemoveProductMultipleProducts() throws Exception {
+        // Create and save a shop
+        Shop shop = new Shop();
+        shop.setName("Tech Store");
+
+        // Create multiple products
+        Product product1 = new Product();
+        product1.setName("Laptop");
+        product1.setPrice(1299.99);
+        product1.setStock(10);
+
+        Product product2 = new Product();
+        product2.setName("Mouse");
+        product2.setPrice(29.99);
+        product2.setStock(50);
+
+        // Add both products to shop
+        shop.addProduct(product1);
+        shop.addProduct(product2);
+        Shop savedShop = shopRepository.save(shop);
+
+        // Get the first product's ID
+        Product laptopProduct = productRepository.findAll().iterator().next();
+
+        // Remove only the laptop
+        mockMvc.perform(post("/gui/remove-product")
+                        .param("productId", laptopProduct.getId().toString())
+                        .param("shopId", savedShop.getId().toString()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/gui/shops"));
+
+        // Verify only one product remains
+        Shop updatedShop = shopRepository.findById(savedShop.getId()).get();
+        assertEquals(1, updatedShop.getProducts().size());
+
+        // Verify the correct product was removed
+        assertFalse(productRepository.existsById(laptopProduct.getId()));
+
+        // Verify the other product still exists
+        long remainingProductCount = 0;
+        for (Product p : productRepository.findAll()) {
+            remainingProductCount++;
+        }
+        assertEquals(1, remainingProductCount);
+    }
+
+    /**
+     * Tests the behavior of removeShop() - successful removal
+     */
+    @Test
+    void testRemoveShopSuccess() throws Exception {
+        // Create and save a shop
+        Shop shop = new Shop();
+        shop.setName("Clothing Store");
+        Shop savedShop = shopRepository.save(shop);
+
+        Long shopId = savedShop.getId();
+
+        // Perform POST request to remove the shop
+        mockMvc.perform(post("/gui/remove-shop")
+                        .param("shopId", shopId.toString()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/gui/shops"));
+
+        // Verify the shop was deleted from repository
+        assertFalse(shopRepository.existsById(shopId));
+    }
+
+    /**
+     * Tests the behavior of removeShop() - shop not found
+     */
+    @Test
+    void testRemoveShopNotFound() throws Exception {
+        // Attempt to remove a non-existent shop (ID 999)
+        mockMvc.perform(post("/gui/remove-shop")
+                        .param("shopId", "999"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/error"));
+    }
+
+    /**
+     * Tests the behavior of removeShop() - shop with products is removed (cascade delete)
+     */
+    @Test
+    void testRemoveShopWithProducts() throws Exception {
+        // Create and save a shop
+        Shop shop = new Shop();
+        shop.setName("Game Store");
+
+        // Create and add products to the shop
+        Product product1 = new Product();
+        product1.setName("PlayStation 5");
+        product1.setPrice(499.99);
+        product1.setStock(5);
+
+        Product product2 = new Product();
+        product2.setName("Xbox Series X");
+        product2.setPrice(499.99);
+        product2.setStock(3);
+
+        shop.addProduct(product1);
+        shop.addProduct(product2);
+        Shop savedShop = shopRepository.save(shop);
+
+        Long shopId = savedShop.getId();
+
+        // Get product IDs before deletion
+        Long product1Id = null;
+        Long product2Id = null;
+        for (Product p : productRepository.findAll()) {
+            if (p.getName().equals("PlayStation 5")) {
+                product1Id = p.getId();
+            } else if (p.getName().equals("Xbox Series X")) {
+                product2Id = p.getId();
+            }
+        }
+
+        // Remove the shop
+        mockMvc.perform(post("/gui/remove-shop")
+                        .param("shopId", shopId.toString()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/gui/shops"));
+
+        // Verify the shop was deleted
+        assertFalse(shopRepository.existsById(shopId));
+
+        // Verify associated products were also deleted (cascade delete)
+        assertFalse(productRepository.existsById(product1Id));
+        assertFalse(productRepository.existsById(product2Id));
+    }
+
+    /**
+     * Tests the behavior of removeShop() - correct shop removed when multiple exist
+     */
+    @Test
+    void testRemoveShopMultipleShops() throws Exception {
+        // Create and save multiple shops
+        Shop shop1 = new Shop();
+        shop1.setName("Shop A");
+        Shop savedShop1 = shopRepository.save(shop1);
+
+        Shop shop2 = new Shop();
+        shop2.setName("Shop B");
+        Shop savedShop2 = shopRepository.save(shop2);
+
+        // Remove only shop1
+        mockMvc.perform(post("/gui/remove-shop")
+                        .param("shopId", savedShop1.getId().toString()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/gui/shops"));
+
+        // Verify shop1 was deleted
+        assertFalse(shopRepository.existsById(savedShop1.getId()));
+
+        // Verify shop2 still exists
+        assertTrue(shopRepository.existsById(savedShop2.getId()));
+
+        // Verify only one shop remains
+        long shopCount = 0;
+        for (Shop s : shopRepository.findAll()) {
+            shopCount++;
+        }
+        assertEquals(1, shopCount);
+    }
+
+
 }

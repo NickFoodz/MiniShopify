@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en-US">
 <head>
     <meta charset="UTF-8">
     <title>Shops</title>
@@ -17,9 +17,20 @@
 
 <ul>
     <li th:each="shop : ${shops}">
-        <span th:text="'Shop ID: ' + ${shop.id}"></span>
+        <span th:text="'Shop Name: ' + ${shop.name} + ', Shop ID: ' + ${shop.id}"></span>
+        <form th:action="@{/gui/remove-shop}" method="post" style="display:inline;">
+            <input type="hidden" name="shopId" th:value="${shop.id}">
+            <button type="submit">Remove Shop</button>
+        </form>
         <ul>
-            <li th:each="product : ${shop.products}" th:text="${product.name}"></li>
+            <li th:each="product : ${shop.products}">
+                <span th:text="${product.name} + ', ProductID: ' + ${product.id}"></span>
+                <form th:action="@{/gui/remove-product}" method="post" style="display:inline;">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+                    <input type="hidden" name="shopId" th:value="${shop.id}">
+                    <button type="submit">Remove Product</button>
+                </form>
+            </li>
         </ul>
     </li>
 </ul>
