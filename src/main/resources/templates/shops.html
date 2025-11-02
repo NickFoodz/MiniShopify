@@ -18,6 +18,10 @@
 <ul>
     <li th:each="shop : ${shops}">
         <span th:text="'Shop Name: ' + ${shop.name} + ', Shop ID: ' + ${shop.id}"></span>
+        <form th:action="@{/gui/remove-shop}" method="post" style="display:inline;">
+            <input type="hidden" name="shopId" th:value="${shop.id}">
+            <button type="submit">Remove Shop</button>
+        </form>
         <ul>
             <li th:each="product : ${shop.products}">
                 <span th:text="${product.name} + ', ProductID: ' + ${product.id}"></span>

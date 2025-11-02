@@ -1,7 +1,9 @@
 package org.example.controllers;
 
+import org.example.models.Merchant;
 import org.example.models.Product;
 import org.example.models.Shop;
+import org.example.repository.MerchantRepository;
 import org.example.repository.ProductRepository;
 import org.example.repository.ShopRepository;
 import org.springframework.stereotype.Controller;
@@ -17,10 +19,12 @@ public class GuiController {
 
     private final ShopRepository shopRepository;
     private final ProductRepository productRepository;
+    private final MerchantRepository merchantRepository;
 
-    public GuiController(ShopRepository shopRepository, ProductRepository productRepository) {
+    public GuiController(ShopRepository shopRepository, ProductRepository productRepository, MerchantRepository merchantRepository) {
         this.shopRepository = shopRepository;
         this.productRepository = productRepository;
+        this.merchantRepository = merchantRepository;
     }
 
     // Home page
@@ -109,6 +113,27 @@ public class GuiController {
             return "redirect:/error";
         }
 
+    }
+
+    //Remove Shop
+    @PostMapping("/remove-shop")
+    public String removeShop(@RequestParam long shopId) {
+        //Need to add merchant id at some point if multiple exist
+        try{
+            //Add merchant here similar to below
+            Shop shop = shopRepository.findById(shopId).
+                    orElseThrow(() -> new IllegalArgumentException("Shop not found"));
+
+            //Remove relationship from merchant (when eventually exists)
+            //merchant.removeShop(shop.getName());
+            //Delete Shop
+            shopRepository.delete(shop);
+
+            return "redirect:/gui/shops";
+
+        } catch (IllegalArgumentException e){
+            return "redirect:/error";
+        }
     }
 
 }
