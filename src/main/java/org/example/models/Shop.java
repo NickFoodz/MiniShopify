@@ -14,10 +14,10 @@ public class Shop {
 
     private String name;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> categories = new ArrayList<String>();
 
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Product> products = new ArrayList<Product>();
 
     @ManyToOne
