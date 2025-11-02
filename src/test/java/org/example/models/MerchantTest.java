@@ -88,13 +88,13 @@ class MerchantTest {
     void removeShop() {
         Shop testShop = new Shop();
         testShop.setName("TestShop");
-        System.out.println(testShop.getName());
+        testShop.setId(5L);
         assertEquals("TestShop", testShop.getName());
         testShops.add(testShop);
         assertTrue(testShops.contains(testShop));
         assertTrue(testMerchant.getShops().contains(testShop));
-
-        testMerchant.removeShop("TestShop");
+        testMerchant.removeShop(5);
+        assertFalse(testMerchant.getShops().contains(testShop));
 
 
 

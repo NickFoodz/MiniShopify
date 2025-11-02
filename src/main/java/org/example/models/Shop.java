@@ -110,10 +110,10 @@ public class Shop {
 
     /**
      * Remove a product by name from the shop's list of products
-     * @param productName the name of the Product, stored in its name field
+     * @param productId the name of the Product, stored in its name field
      */
-    public void removeProduct(String productName) {
-        this.products.removeIf(product -> product.getName().equals(productName));
+    public void removeProduct(long productId) {
+        this.products.removeIf(product -> product.getId() != null && product.getId().equals(productId));
     }
 }
 

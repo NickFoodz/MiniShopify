@@ -88,10 +88,10 @@ public class Merchant {
 
     /**
      * Removes a shop from the shop list
-     * @param shopName the name of the shop to remove
+     * @param shopId the name of the shop to remove
      */
-    public void removeShop(String shopName) {
+    public void removeShop(long shopId) {
         //Even works if non-target shop name field is null (this was annoying)
-        this.shops.removeIf(shop -> shop.getName() != null && shop.getName().equals(shopName));
+        this.shops.removeIf(shop -> shop.getId() != null && shop.getId().equals(shopId));
     }
 }

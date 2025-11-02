@@ -102,12 +102,13 @@ class ShopTest {
         List<Product> testProducts = testShop.getProducts();
         Product productTest = new Product();
         productTest.setName("Product1");
+        productTest.setId(5L);
         //Add and test it is in the product list
         testShop.addProduct(productTest);
         assertTrue(testProducts.contains(productTest));
 
         //Test removal
-        testShop.removeProduct("Product1");
+        testShop.removeProduct(5);
         assertFalse(testProducts.contains(productTest));
         assertTrue(testShop.getProducts().isEmpty());
 

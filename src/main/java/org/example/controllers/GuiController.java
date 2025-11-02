@@ -108,7 +108,7 @@ public class GuiController {
                     orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
             //Remove relationship
-            shop.removeProduct(product.getName());
+            shop.removeProduct(product.getId());
             //Delete the product
             productRepository.delete(product);
             shopRepository.save(shop);
