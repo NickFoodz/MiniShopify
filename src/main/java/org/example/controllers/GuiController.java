@@ -91,7 +91,12 @@ public class GuiController {
         // return "redirect:/gui/";
     }
 
-    //Remove product
+    /**
+     * Remove product from the shop
+     * @param productId the product to remove
+     * @param shopId the shop to remove product from
+     * @return back to the shops page
+     */
     @PostMapping("/remove-product")
     public String removeProduct(@RequestParam long productId,
                                 @RequestParam long shopId) {
@@ -115,7 +120,11 @@ public class GuiController {
 
     }
 
-    //Remove Shop
+    /**
+     * Removes a shop from the repository.
+     * @param shopId the shop to remove
+     * @return to the shops page
+     */
     @PostMapping("/remove-shop")
     public String removeShop(@RequestParam long shopId) {
         //Need to add merchant id at some point if multiple exist
