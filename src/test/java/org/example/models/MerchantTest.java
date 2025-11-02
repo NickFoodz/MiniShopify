@@ -78,7 +78,7 @@ class MerchantTest {
 
     @Test
     void setShops() {
-        List<Shop> testShops2 = new ArrayList();
+        List<Shop> testShops2 = new ArrayList<Shop>();
         testShops2.add(new Shop());
         testMerchant.setShops(testShops2);
         assertSame(testShops2, testMerchant.getShops());

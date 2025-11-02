@@ -41,7 +41,7 @@ public class Product {
 
     /**
      * Getter for product name
-     * @return
+     * @return the product name
      */
     public String getName() {
         return name;
