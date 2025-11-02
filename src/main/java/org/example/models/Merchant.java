@@ -88,7 +88,7 @@ public class Merchant {
 
     /**
      * Removes a shop from the shop list
-     * @param shopId the name of the shop to remove
+     * @param shopId the id of the shop to remove
      */
     public void removeShop(long shopId) {
         //Even works if non-target shop name field is null (this was annoying)

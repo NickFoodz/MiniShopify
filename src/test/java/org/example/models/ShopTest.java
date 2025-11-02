@@ -33,34 +33,52 @@ class ShopTest {
     void tearDown() {
     }
 
+    /**
+     * Tests getId() in Shop class
+     */
     @Test
     void getId() {
         assertEquals(1L, testShop.getId());
     }
 
+    /**
+     * Tests setId() in Shop class
+     */
     @Test
     void setId() {
         testShop.setId(2L);
         assertEquals(2L, testShop.getId());
     }
 
+    /**
+     * Tests getName() in Shop class
+     */
     @Test
     void getName() {
         assertEquals("Test Shop", testShop.getName());
     }
 
+    /**
+     * Tests setName() in Shop class
+     */
     @Test
     void setName() {
         testShop.setName("Test Shop 2");
         assertEquals("Test Shop 2", testShop.getName());
     }
 
+    /**
+     * Tests getCategories() in Shop class
+     */
     @Test
     void getCategories() {
         List<String> testCategories = testShop.getCategories();
         assertEquals(testCategories, testShop.getCategories());
     }
 
+    /**
+     * Tests addCategory() in Shop class
+     */
     @Test
     void addCategory() {
         testShop.addCategory("test");
@@ -68,12 +86,18 @@ class ShopTest {
         assertEquals("test", testShop.getCategories().get(0));
     }
 
+    /**
+     * Tests getMerchant() in Shop class
+     */
     @Test
     void getMerchant() {
         testMerchant = testShop.getMerchant();
         assertEquals(testMerchant, testShop.getMerchant());
     }
 
+    /**
+     * Tests setMerchant() in Shop class
+     */
     @Test
     void setMerchant() {
         Merchant testMerchant2 = new Merchant();
@@ -81,12 +105,18 @@ class ShopTest {
         assertEquals(testMerchant2, testShop.getMerchant());
     }
 
+    /**
+     * Tests getProducts() in Shop class
+     */
     @Test
     void getProducts() {
         List<Product> testProducts = testShop.getProducts();
         assertEquals(testProducts, testShop.getProducts());
     }
 
+    /**
+     * Tests addProduct() in Shop class
+     */
     @Test
     void addProduct() {
         Product testProduct = new Product();
@@ -97,6 +127,9 @@ class ShopTest {
 
     }
 
+    /**
+     * Tests removeProduct() in Shop class
+     */
     @Test
     void removeProduct() {
         List<Product> testProducts = testShop.getProducts();

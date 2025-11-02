@@ -89,7 +89,7 @@ public class Product {
 
     /**
      * Getter for the stock
-     * @return stock int of products in stock
+     * @return stock number of products in stock
      */
     public int getStock() {
         return stock;

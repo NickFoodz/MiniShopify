@@ -93,8 +93,8 @@ public class GuiController {
 
     /**
      * Remove product from the shop
-     * @param productId the product to remove
-     * @param shopId the shop to remove product from
+     * @param productId the product id to remove
+     * @param shopId the shop id to remove product from
      * @return back to the shops page
      */
     @PostMapping("/remove-product")
@@ -122,7 +122,7 @@ public class GuiController {
 
     /**
      * Removes a shop from the repository.
-     * @param shopId the shop to remove
+     * @param shopId the shop id to remove
      * @return to the shops page
      */
     @PostMapping("/remove-shop")

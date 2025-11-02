@@ -109,8 +109,8 @@ public class Shop {
     }
 
     /**
-     * Remove a product by name from the shop's list of products
-     * @param productId the name of the Product, stored in its name field
+     * Remove a product by id from the shop's list of products
+     * @param productId the id of the Product, stored in its name field
      */
     public void removeProduct(long productId) {
         this.products.removeIf(product -> product.getId() != null && product.getId().equals(productId));
