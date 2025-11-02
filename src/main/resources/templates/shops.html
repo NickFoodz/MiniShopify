@@ -16,7 +16,12 @@
 </form>
 
 <ul>
-    <li th:each="shop : ${shops}" th:text="${shop.name}"></li>
+    <li th:each="shop : ${shops}">
+        <span th:text="'Shop ID: ' + ${shop.id}"></span>
+        <ul>
+            <li th:each="product : ${shop.products}" th:text="${product.name}"></li>
+        </ul>
+    </li>
 </ul>
 </body>
 </html>
