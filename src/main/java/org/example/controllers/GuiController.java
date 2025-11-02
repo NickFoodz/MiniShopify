@@ -82,9 +82,33 @@ public class GuiController {
 
         }
 
-
         // After adding product, needs to be added to shop and displayed (Someone can work on this from here)
         // productRepository.save(product);
         // return "redirect:/gui/";
     }
+
+    //Remove product
+    @PostMapping("/remove-product")
+    public String removeProduct(@RequestParam long productId,
+                                @RequestParam long shopId) {
+
+        try {
+            Shop shop = shopRepository.findById(shopId).
+                    orElseThrow(() -> new IllegalArgumentException("Shop not found"));
+            Product product = productRepository.findById(productId).
+                    orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+            //Remove relationship
+            shop.removeProduct(product.getName());
+            //Delete the product
+            productRepository.delete(product);
+            shopRepository.save(shop);
+
+            return "redirect:/gui/shops";
+        }catch (IllegalArgumentException e){
+            return "redirect:/error";
+        }
+
+    }
+
 }

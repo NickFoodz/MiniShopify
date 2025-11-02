@@ -111,7 +111,6 @@ class ShopTest {
         assertFalse(testProducts.contains(productTest));
         assertTrue(testShop.getProducts().isEmpty());
 
-        //This test can fail if one or more shops do NOT have a name field (e.g. a null name field)
 
     }
 }
