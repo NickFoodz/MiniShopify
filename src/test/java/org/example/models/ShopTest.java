@@ -96,4 +96,22 @@ class ShopTest {
         assertEquals("Test Product", testShop.getProducts().get(0).getName());
 
     }
+
+    @Test
+    void removeProduct() {
+        List<Product> testProducts = testShop.getProducts();
+        Product productTest = new Product();
+        productTest.setName("Product1");
+        //Add and test it is in the product list
+        testShop.addProduct(productTest);
+        assertTrue(testProducts.contains(productTest));
+
+        //Test removal
+        testShop.removeProduct("Product1");
+        assertFalse(testProducts.contains(productTest));
+        assertTrue(testShop.getProducts().isEmpty());
+
+        //This test can fail if one or more shops do NOT have a name field (e.g. a null name field)
+
+    }
 }

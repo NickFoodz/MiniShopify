@@ -28,53 +28,92 @@ public class Shop {
 
     // Getters & Setters
 
-    // Getter for id
+    /**
+     * Getter for the id
+     * @return the id of this shop object
+     */
     public Long getId() {
         return this.id;
     }
 
-    // Setter for id
+    /**
+     * Sets the ID for the shop object
+     * @param id the id to set for the shop
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    // Getter for store name
+    /**
+     * Getter for the name field of the shop object
+     * @return the name of the shop
+     */
     public String getName() {
         return this.name;
     }
 
-    // Setter for store name
+    /**
+     * Setter for the name field of the shop object
+     * @param name the name of the shop
+     */
     public void setName(String name) {
         this.name = name;
     }
 
-    // Get categories
+    /**
+     * Getter for the categories list
+     * @return the categories list
+     */
     public List<String> getCategories() {
         return this.categories;
     }
 
-    // add categories
+    /**
+     * Adds a category to the categories list
+     * @param category the category to add
+     */
     public void addCategory(String category) {
         categories.add(category);
     }
 
-    // Get merchant
+    /**
+     * Getter for the merchant
+     * @return the merchant
+     */
     public Merchant getMerchant(){
         return this.merchant;
     }
 
-    // Set merchant
+    /**
+     * Setter for the merchant
+     * @param merchant the merchant to set for the shop
+     */
     public void setMerchant(Merchant merchant){
         this.merchant = merchant;
     }
 
-    // get products
+    /**
+     * Getter for the list of products this shop has
+     * @return the list of products the shop has
+     */
     public List<Product> getProducts() {
         return this.products;
     }
 
+    /**
+     * Adds a product to the product list
+     * @param product the product object to add to the shop
+     */
     public void addProduct(Product product) {
         this.products.add(product);product.setShop(this);
+    }
+
+    /**
+     * Remove a product by name from the shop's list of products
+     * @param productName the name of the Product, stored in its name field
+     */
+    public void removeProduct(String productName) {
+        this.products.removeIf(product -> product.getName().equals(productName));
     }
 }
 

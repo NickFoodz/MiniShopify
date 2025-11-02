@@ -26,8 +26,10 @@ class MerchantTest {
         testMerchant.setName("TestMerchant");
         testMerchant.setEmail("TestEmail");
         testShops = new ArrayList<>();
-        testShops.add(new Shop());
-        testShops.add(new Shop());
+        Shop shop1 = new Shop();
+        Shop shop2 = new Shop();
+        testShops.add(shop1);
+        testShops.add(shop2);
         testMerchant.setShops(testShops);
     }
 
@@ -80,5 +82,21 @@ class MerchantTest {
         testShops2.add(new Shop());
         testMerchant.setShops(testShops2);
         assertSame(testShops2, testMerchant.getShops());
+    }
+
+    @Test
+    void removeShop() {
+        Shop testShop = new Shop();
+        testShop.setName("TestShop");
+        System.out.println(testShop.getName());
+        assertEquals("TestShop", testShop.getName());
+        testShops.add(testShop);
+        assertTrue(testShops.contains(testShop));
+        assertTrue(testMerchant.getShops().contains(testShop));
+
+        testMerchant.removeShop("TestShop");
+
+
+
     }
 }

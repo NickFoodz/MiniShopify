@@ -23,56 +23,98 @@ public class Product {
 
     // Getters and Setters
 
-    // Getter for ID
+    /**
+     * Getter for product id
+     * @return id of the product
+     */
     public Long getId() {
         return id;
     }
-    // Setter for ID
+
+    /**
+     * Setter for product id
+     * @param id the id of the product
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    // Getter for name
+    /**
+     * Getter for product name
+     * @return
+     */
     public String getName() {
         return name;
     }
-    // Setter for name
+
+    /**
+     * Setter for the name
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
-    // Getter for description
+    /**
+     * Getter for the description
+     * @return the description of the product
+     */
     public String getDescription() {
         return description;
     }
-    // Setter for description
+
+    /**
+     * Setter for the description
+     * @param description the description to set
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    // Getter for price
+    /**
+     * Getter for the price
+     * @return the price
+     */
     public double getPrice() {
         return price;
     }
-    // Setter for price
+
+    /**
+     * Setter for price
+     * @param price the price to be set
+     */
     public void setPrice(double price) {
         this.price = price;
     }
 
-    // getter for stock
+    /**
+     * Getter for the stock
+     * @return stock int of products in stock
+     */
     public int getStock() {
         return stock;
     }
-    // setter for stock
+
+    /**
+     * Setter for the stock
+     * @param stock the number in stock (int)
+     */
     public void setStock(int stock) {
         this.stock = stock;
     }
 
-    // getter for shop
+    /**
+     * Getter for the shop
+     * @return shop the shop in question
+     */
     public Shop getShop() {
         return shop;
     }
-    // setter for shop
+
+    /**
+     * Setter for the shop
+     * @param shop the shop to set
+     */
     public void setShop(Shop shop) {
         this.shop = shop;
     }
