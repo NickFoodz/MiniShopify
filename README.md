@@ -71,7 +71,7 @@ Mini-Shopify is a web-based e-commerce platform built with Spring Boot that allo
 See `Diagrams/UMLClass_Diagram.png` for the complete PlantUML model diagram.
 
 ### Class Diagram Legend
-![img.png](img.png)
+![img.png](Diagrams/UMLClassDiagram_Legend.png)
 
 ## Project Structure
 ```
