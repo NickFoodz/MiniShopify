@@ -98,6 +98,7 @@ class RestApiIntegrationTest {
         Merchant merchant = new Merchant();
         merchant.setName("John Doe");
         merchant.setEmail("john@example.com");
+        merchant.setPassword("password");
 
         merchantRepository.save(merchant);
 
