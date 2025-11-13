@@ -12,7 +12,11 @@ public class Merchant {
     private Long id;
 
     private String name;
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private String password; // will be encoded using BCrypt
 
     @OneToMany(mappedBy = "merchant", cascade = CascadeType.ALL)
     private List<Shop> shops;
@@ -93,5 +97,21 @@ public class Merchant {
     public void removeShop(long shopId) {
         //Even works if non-target shop name field is null (this was annoying)
         this.shops.removeIf(shop -> shop.getId() != null && shop.getId().equals(shopId));
+    }
+
+    /**
+     * Setter for the merchant password
+     * @param password the password for the merchant
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * Returns the merchants password
+     * @return password of the merchant
+     */
+    public String getPassword() {
+        return this.password;
     }
 }

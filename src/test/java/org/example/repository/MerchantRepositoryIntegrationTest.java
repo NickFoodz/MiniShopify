@@ -39,6 +39,7 @@ class MerchantRepositoryIntegrationTest {
         Merchant merchant = new Merchant();
         merchant.setName("John Doe");
         merchant.setEmail("john.doe@example.com");
+        merchant.setPassword("password");
 
         Merchant saved = merchantRepository.save(merchant);
 
@@ -54,6 +55,9 @@ class MerchantRepositoryIntegrationTest {
         assertTrue(found.isPresent());
         // Validate expected outcomes
         assertEquals("john.doe@example.com", found.get().getEmail());
+
+        // Validate expected outcome
+        assertEquals("password", found.get().getPassword());
     }
 
     @Test
@@ -64,6 +68,7 @@ class MerchantRepositoryIntegrationTest {
         Merchant merchant = new Merchant();
         merchant.setName("Jane Smith");
         merchant.setEmail("jane@example.com");
+        merchant.setPassword("password");
 
         Merchant savedMerchant = merchantRepository.save(merchant);
 
@@ -93,6 +98,7 @@ class MerchantRepositoryIntegrationTest {
         Merchant merchant = new Merchant();
         merchant.setName("Bob Johnson");
         merchant.setEmail("bob@example.com");
+        merchant.setPassword("password");
 
         Merchant saved = merchantRepository.save(merchant);
 
@@ -114,6 +120,7 @@ class MerchantRepositoryIntegrationTest {
         Merchant merchant = new Merchant();
         merchant.setName("Alice Williams");
         merchant.setEmail("alice@example.com");
+        merchant.setPassword("password");
 
         Merchant saved = merchantRepository.save(merchant);
         Long merchantId = saved.getId();
