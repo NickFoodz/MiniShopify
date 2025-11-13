@@ -8,6 +8,7 @@ import org.example.repository.MerchantRepository;
 import org.example.repository.ProductRepository;
 import org.example.repository.ShopRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -38,6 +39,13 @@ class RestApiIntegrationTest {
 
     @Autowired
     private MerchantRepository merchantRepository;
+
+    @BeforeEach
+    void clearDatabase() {
+        productRepository.deleteAll();
+        shopRepository.deleteAll();
+        merchantRepository.deleteAll();
+    }
 
     @AfterEach
     void cleanup() {
