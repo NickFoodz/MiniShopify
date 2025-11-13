@@ -31,6 +31,7 @@ class MerchantTest {
         testShops.add(shop1);
         testShops.add(shop2);
         testMerchant.setShops(testShops);
+        testMerchant.setPassword("password");
     }
 
     @AfterEach
@@ -125,5 +126,22 @@ class MerchantTest {
 
 
 
+    }
+
+    /**
+     * test for setting password
+     */
+    @Test
+    void setPassword() {
+        testMerchant.setPassword("password1");
+        assertEquals("password1", testMerchant.getPassword());
+    }
+
+    /**
+     * Tests getPassword() in Customer Class
+     */
+    @Test
+    void getPassword() {
+        assertEquals("password", testMerchant.getPassword());
     }
 }
