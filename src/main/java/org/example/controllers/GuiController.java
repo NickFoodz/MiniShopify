@@ -154,6 +154,23 @@ public class GuiController {
         }
     }
 
+    @GetMapping("/shops/{id}")
+    public String viewShop(@PathVariable Long id, Model model, RedirectAttributes ra) {
+        try {
+            if (shopRepository.findById(id).isEmpty()) {
+                throw new IllegalArgumentException("No shop found");
+            }
+            Shop shop = shopRepository.findById(id).get();
+            model.addAttribute("shop", shop);
+            model.addAttribute("products", shop.getProducts());
+            return "shop";
+        } catch (Exception e){
+            ra.addFlashAttribute("message", e.getMessage());
+            return "redirect:/gui/custom-error";
+        }
+
+    }
+
     @GetMapping("/custom-error")
     public String showErrorPage() {
         return "custom-error";
