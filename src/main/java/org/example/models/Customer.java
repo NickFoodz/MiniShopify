@@ -1,7 +1,7 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-import java.util.List;
+
 
 @Entity
 public class Customer {
@@ -18,6 +18,9 @@ public class Customer {
 
     private String name;
 
+    @OneToOne(mappedBy="customer",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
+
     // --- Constructors ---
     public Customer() {}
 
@@ -25,6 +28,7 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.name = name;
+        this.cart = new Cart(this);
     }
 
     // --- Getters & Setters ---

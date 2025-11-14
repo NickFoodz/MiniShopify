@@ -104,6 +104,29 @@ public class Product {
     }
 
     /**
+     * Adds to the stock of the item
+     * @param stockToAdd number of items added to stock
+     */
+    public void addStock(int stockToAdd) {
+        this.stock += stockToAdd;
+    }
+
+    /**
+     * Removes from the stock of the item
+     * @param stockToRemove the number of items to be removed
+     */
+    public boolean removeStock(int stockToRemove) {
+        //Ensure an amount can't be deducted to make stock negative.
+        if(this.stock > 0 && this.stock >= stockToRemove) {
+            this.stock -= stockToRemove;
+            return true;
+        }
+        //False if stock is not removed
+        return false;
+    }
+
+
+    /**
      * Getter for the shop
      * @return shop the shop in question
      */
