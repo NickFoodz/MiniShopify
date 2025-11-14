@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @Configuration
@@ -50,6 +52,7 @@ public class    ShopAppApplication {
         return args -> {
             Faker faker = new Faker();
             Random random = new Random();
+            PasswordEncoder encoder = new BCryptPasswordEncoder();
 
             productRepo.deleteAll();
             shopRepo.deleteAll();
@@ -60,7 +63,8 @@ public class    ShopAppApplication {
             for (int i = 0; i < 10; i++) {
                 Merchant merchant = new Merchant();
                 merchant.setName(faker.company().name());
-                merchant.setEmail(faker.internet().emailAddress());
+                merchant.setEmail("merchant" + i + "_" + faker.internet().emailAddress());
+                merchant.setPassword(encoder.encode("password"));
 
                 List<Shop> shops = new ArrayList<>();
                 for (int j = 0; j < 3; j++) {
