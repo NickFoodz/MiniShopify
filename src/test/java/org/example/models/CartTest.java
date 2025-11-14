@@ -322,6 +322,19 @@ class CartTest {
     }
 
     @Test
+    void testAddProductMultipleTimesSameProduct() {
+        // Verify that adding the same product multiple times always merges
+        cart.addProduct(product1, 2);
+        cart.addProduct(product1, 3);
+        cart.addProduct(product1, 5);
+
+        // Should still be only ONE CartItem with merged quantity
+        assertEquals(1, cart.getCartItems().size());
+        assertEquals(10, cart.getCartItems().get(0).getQuantity()); // 2 + 3 + 5 = 10
+        assertEquals(product1, cart.getCartItems().get(0).getProduct());
+    }
+
+    @Test
     void testClearCartMultipleTimes() {
         cart.addProduct(product1, 5);
         cart.clearCart();
