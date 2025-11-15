@@ -149,7 +149,7 @@ class GuiControllerIntegrationTest {
                         .param("stock", "15")
                         .param("shopID", "999"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/error"));
+                .andExpect(redirectedUrl("/gui/custom-error"));
 
         Iterable<Product> products = productRepository.findAll();
         long count = 0;
@@ -247,7 +247,7 @@ class GuiControllerIntegrationTest {
                         .param("productId", "999")
                         .param("shopId", savedShop.getId().toString()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/error"));
+                .andExpect(redirectedUrl("/gui/custom-error"));
     }
 
     /**
@@ -260,7 +260,7 @@ class GuiControllerIntegrationTest {
                         .param("productId", "1")
                         .param("shopId", "999"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/error"));
+                .andExpect(redirectedUrl("/gui/custom-error"));
     }
 
     /**
@@ -344,7 +344,7 @@ class GuiControllerIntegrationTest {
         mockMvc.perform(post("/gui/remove-shop")
                         .param("shopId", "999"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/error"));
+                .andExpect(redirectedUrl("/gui/custom-error"));
     }
 
     /**

@@ -9,6 +9,7 @@ import org.example.repository.ShopRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,11 +62,15 @@ public class GuiController {
                              @RequestParam String description,
                              @RequestParam double price,
                              @RequestParam int stock,
-                             @RequestParam int shopID) {
+                             @RequestParam int shopID,
+                             RedirectAttributes redirectAttributes) {
 
         long id = shopID;
 
-        if (shopRepository.findById(id).isPresent()){
+        try {
+            if (shopRepository.findById(id).isEmpty()) {
+                throw new IllegalArgumentException("Shop with ID " + id + " not found!");
+            }
             Product product = new Product();
             product.setName(name);
             product.setDescription(description);
@@ -78,11 +83,10 @@ public class GuiController {
             shopRepository.save(shop);
 
             return "redirect:/gui/shops";
-        } else {
-
-            // some error redirect
-
-            return "redirect:/error";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            redirectAttributes.addFlashAttribute("path", "Path: /add-product");
+            return "redirect:/gui/custom-error";
 
         }
 
@@ -99,7 +103,8 @@ public class GuiController {
      */
     @PostMapping("/remove-product")
     public String removeProduct(@RequestParam long productId,
-                                @RequestParam long shopId) {
+                                @RequestParam long shopId,
+                                RedirectAttributes redirectAttributes) {
 
         try {
             Shop shop = shopRepository.findById(shopId).
@@ -115,7 +120,9 @@ public class GuiController {
 
             return "redirect:/gui/shops";
         }catch (IllegalArgumentException e){
-            return "redirect:/error";
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            redirectAttributes.addFlashAttribute("path", "Path: /remove-product");
+            return "redirect:/gui/custom-error";
         }
 
     }
@@ -126,7 +133,7 @@ public class GuiController {
      * @return to the shops page
      */
     @PostMapping("/remove-shop")
-    public String removeShop(@RequestParam long shopId) {
+    public String removeShop(@RequestParam long shopId, RedirectAttributes redirectAttributes) {
         //Need to add merchant id at some point if multiple exist
         try{
             //Add merchant here similar to below
@@ -141,8 +148,32 @@ public class GuiController {
             return "redirect:/gui/shops";
 
         } catch (IllegalArgumentException e){
-            return "redirect:/error";
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            redirectAttributes.addFlashAttribute("path", "Path: /remove-shop");
+            return "redirect:/gui/custom-error";
         }
+    }
+
+    @GetMapping("/shops/{id}")
+    public String viewShop(@PathVariable Long id, Model model, RedirectAttributes ra) {
+        try {
+            if (shopRepository.findById(id).isEmpty()) {
+                throw new IllegalArgumentException("No shop found");
+            }
+            Shop shop = shopRepository.findById(id).get();
+            model.addAttribute("shop", shop);
+            model.addAttribute("products", shop.getProducts());
+            return "shop";
+        } catch (Exception e){
+            ra.addFlashAttribute("message", e.getMessage());
+            return "redirect:/gui/custom-error";
+        }
+
+    }
+
+    @GetMapping("/custom-error")
+    public String showErrorPage() {
+        return "custom-error";
     }
 
 }
