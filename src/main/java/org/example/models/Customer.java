@@ -18,6 +18,9 @@ public class Customer {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private UserType userType = UserType.CUSTOMER;
+
     // --- Constructors ---
     public Customer() {}
 
@@ -76,5 +79,13 @@ public class Customer {
      * @param name of the customer
      */
     public void setName(String name) { this.name = name; }
+
+    /**
+     * Returns the type of user
+     * @return UserType, the type of user
+     */
+    public UserType getUserType() {
+        return this.userType;
+    }
 
 }
