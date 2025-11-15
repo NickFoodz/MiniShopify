@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Central configuration class for Spring Security.
+ *
  * This class defines all security-related behaviors for the application,
  * including password encoding, authentication handling, request authorization,
  * login flow, and logout behavior. Spring Boot automatically detects this class
