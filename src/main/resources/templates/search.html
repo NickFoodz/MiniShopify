@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Search Products</title>
+</head>
+<body>
+
+<h1>Search Products</h1>
+
+<nav>
+  <a href="/gui/">Back to Home</a>
+</nav>
+
+<form th:action="@{/gui/search}" method="get">
+  <input type="text" name="q" th:value="${query}" placeholder="Search products...">
+  <button type="submit">Search</button>
+</form>
+
+<hr>
+
+<div th:if="${#lists.isEmpty(results)}">
+  <p>No products found.</p>
+</div>
+
+<div th:each="p : ${results}">
+  <h3 th:text="${p.name}"></h3>
+  <p><strong>Description:</strong> <span th:text="${p.description}"></span></p>
+  <p><strong>Price:</strong> $<span th:text="${p.price}"></span></p>
+  <p><strong>Stock:</strong> <span th:text="${p.stock}"></span></p>
+  <p><strong>Shop:</strong> <span th:text="${p.shop.name}"></span></p>
+  <hr>
+</div>
+
+</body>
+</html>
