@@ -95,4 +95,12 @@ public class CustomerTest {
         assertEquals("password", customer.getPassword());
     }
 
+    /**
+     * Tests getUserType
+     */
+    @Test
+    void getUserType(){
+        assertEquals(UserType.CUSTOMER, customer.getUserType());
+    }
+
 }

@@ -144,4 +144,12 @@ class MerchantTest {
     void getPassword() {
         assertEquals("password", testMerchant.getPassword());
     }
+
+    /**
+     * Tests getUserType
+     */
+    @Test
+    void getUserType(){
+        assertEquals(UserType.MERCHANT, testMerchant.getUserType());
+    }
 }
