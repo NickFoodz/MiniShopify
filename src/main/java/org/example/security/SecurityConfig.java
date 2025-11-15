@@ -12,15 +12,11 @@ import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Central configuration class for Spring Security.
- *
  * This class defines all security-related behaviors for the application,
  * including password encoding, authentication handling, request authorization,
  * login flow, and logout behavior. Spring Boot automatically detects this class
  * because it is annotated with {@code @EnableWebSecurity}.
- *
  * The configuration is structured around three main components:
- *
- *
  * PasswordEncoder — responsible for hashing and verifying passwords.</li>
  * AuthenticationManager— performs the authentication process by delegating to the
  * configured authentication mechanism (such as a custom UserDetailsService)
@@ -107,7 +103,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/gui","/gui/login", "/gui/register/**", "/", "/gui/shops", "/gui/",
-                                "/gui/register/customer", "/gui/register/merchant").permitAll()
+                                "/gui/register/customer", "/gui/register/merchant",
+                                "/gui/search").permitAll()
 
                         // merchant only pages
                         .requestMatchers("/gui/merchant/**").hasRole("MERCHANT")
