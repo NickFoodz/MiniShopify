@@ -105,7 +105,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/gui","/gui/login", "/gui/register/**", "/", "/gui/shops", "/gui/",
                                 "/gui/register/customer", "/gui/register/merchant",
-                                "/gui/search").permitAll()
+                                "/gui/search", "/gui/add-product").permitAll()
 
                         // merchant only pages
                         .requestMatchers("/gui/merchant/**").hasRole("MERCHANT")
