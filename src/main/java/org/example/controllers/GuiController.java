@@ -219,38 +219,4 @@ public class GuiController {
         return "redirect:/login?registered";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login"; // Looks for login.html in templates/
-    }
-
-    @GetMapping("/register/merchant")
-    public String registerMerchant(Model model) {
-        model.addAttribute("merchant", new Merchant());
-        return "/register-merchant";
-    }
-
-    @PostMapping("/register/merchant")
-    public String processMerchant(Merchant merchant) {
-        merchant.setPassword(passwordEncoder.encode(merchant.getPassword()));
-        merchantRepository.save(merchant);
-
-        return "redirect:/login?registered";
-
-    }
-
-    @GetMapping("/register/customer")
-    public String registerCustomer(Model model) {
-        model.addAttribute("customer", new Customer());
-        return "/register-customer";
-    }
-
-    @PostMapping("/register/customer")
-    public String processCustomer(Customer customer) {
-        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-        customerRepository.save(customer);
-
-        return "redirect:/login?registered";
-    }
-
 }
