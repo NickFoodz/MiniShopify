@@ -224,8 +224,10 @@ public class GuiController {
 
         if (userDetails.getUserType() == UserType.MERCHANT) {
             return "redirect:/gui/merchant/profile";
-        } else {
+        } else if (userDetails.getUserType() == UserType.CUSTOMER) {
             return "redirect:/gui/customer/profile";
+        } else {
+            throw new RuntimeException("Unknown user type");
         }
     }
 

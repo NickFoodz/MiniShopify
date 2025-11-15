@@ -114,6 +114,9 @@ public class SecurityConfig {
                         // customer only pages
                         .requestMatchers("/gui/customer/**").hasRole("CUSTOMER")
 
+                        // Dashboard
+                        .requestMatchers("/gui/dashboard").authenticated()
+
                         // any other request
                         .anyRequest().authenticated()
         )
