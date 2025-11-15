@@ -1,5 +1,6 @@
 package org.example.security;
 
+import org.example.models.UserType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -120,7 +121,14 @@ public class SecurityConfig {
                         .loginPage("/gui/login")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/gui/", true)
+                        .successHandler((request, response, authentication) -> {
+                            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+                            if (userDetails.getUserType() == UserType.MERCHANT) {
+                                response.sendRedirect("/gui/merchant/profile");
+                            } else {
+                                response.sendRedirect("/gui/customer/profile");
+                            }
+                        })
                         .permitAll())
                 .logout(logout -> logout.logoutUrl("/gui/logout")
                         .logoutSuccessUrl("/gui/login?logout")

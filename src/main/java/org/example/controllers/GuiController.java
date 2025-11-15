@@ -1,14 +1,13 @@
 package org.example.controllers;
 
-import org.example.models.Customer;
-import org.example.models.Merchant;
-import org.example.models.Product;
-import org.example.models.Shop;
+import org.example.models.*;
 import org.example.repository.CustomerRepository;
 import org.example.repository.MerchantRepository;
 import org.example.repository.ProductRepository;
 import org.example.repository.ShopRepository;
+import org.example.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -201,7 +200,7 @@ public class GuiController {
         merchant.setPassword(passwordEncoder.encode(merchant.getPassword()));
         merchantRepository.save(merchant);
 
-        return "redirect:/login?registered";
+        return "redirect:/gui/login?registered";
 
     }
 
@@ -216,7 +215,18 @@ public class GuiController {
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customerRepository.save(customer);
 
-        return "redirect:/login?registered";
+        return "redirect:/gui/login?registered";
+    }
+
+    @GetMapping("/dashboard")
+    public String dashboardRedirect(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        if (userDetails.getUserType() == UserType.MERCHANT) {
+            return "redirect:/gui/merchant/profile";
+        } else {
+            return "redirect:/gui/customer/profile";
+        }
     }
 
 }

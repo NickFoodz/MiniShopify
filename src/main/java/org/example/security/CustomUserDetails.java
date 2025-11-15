@@ -84,6 +84,14 @@ public class CustomUserDetails implements UserDetails {
         return email;
     }
 
+    /**
+     * Returns the user type
+     * @return
+     */
+    public UserType getUserType() {
+        return userType;
+    }
+
     @Override
     public boolean isAccountNonExpired() { return true; }
 

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Merchant Profile</title>
+</head>
+<body>
+<h1>Welcome, <span th:text="${merchant.name}">Merchant Name</span></h1>
+
+<h2>Your Stores</h2>
+<ul>
+    <li th:each="shop : ${shops}" th:text="${shop.name}">Shop Name</li>
+</ul>
+
+<a href="/gui/shops">Add New Shop</a>
+<a href="/gui/">Back to Home</a>
+</body>
+</html>
