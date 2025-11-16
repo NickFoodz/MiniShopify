@@ -37,7 +37,7 @@ public class    ShopAppApplication {
     public CommandLineRunner linkToLocalHost() {
         return args -> {
             log.info("\n=== Application Ready ===");
-            log.info("Web interface: http://localhost:8080/");
+            log.info("Web interface: http://localhost:8080/gui");
         };
     }
 
@@ -94,7 +94,7 @@ public class    ShopAppApplication {
 
             log.info("💾 Faker data successfully loaded:");
             log.info("→ 10 merchants, 30 shops, 150 products created.");
-            log.info("Web interface: http://localhost:8080/");
+            log.info("Web interface: http://localhost:8080/gui");
 
         };
     }
