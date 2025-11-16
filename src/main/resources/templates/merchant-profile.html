@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Merchant Profile</title>
+</head>
+<body>
+<h1>Welcome, <span th:text="${merchant.name}">Merchant Name</span></h1>
+<form th:action="@{/gui/logout}" method="post" style="display:inline;">
+    <button type="submit">Logout</button>
+</form>
+
+<h2>Your Stores</h2>
+<ul>
+    <li th:each="shop : ${shops}">
+        <span th:text="'Shop Name: ' + ${shop.name} + ', Shop ID: ' + ${shop.id}"></span>
+
+        <form th:action="@{/gui/merchant/remove-shop}" method="post" style="display:inline;">
+            <input type="hidden" name="shopId" th:value="${shop.id}">
+            <button type="submit">Remove Shop</button>
+        </form>
+
+        <ul>
+            <li th:each="product : ${shop.products}">
+                <span th:text="${product.name} + ', ProductID: ' + ${product.id}"></span>
+                <form th:action="@{/gui/merchant/remove-product}" method="post" style="display:inline;">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+                    <input type="hidden" name="shopId" th:value="${shop.id}">
+                    <button type="submit">Remove Product</button>
+                </form>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<hr>
+
+<h3>Create a New Shop</h3>
+<form th:action="@{/gui/merchant/add-shop}" method="post">
+    <input type="text" name="name" placeholder="Shop name" required>
+    <button type="submit">Add Shop</button>
+</form>
+
+<h3>Add new Product</h3>
+<form th:action="@{/gui/merchant/add-product}" method="post">
+    <label>Name:</label>
+    <input type="text" name="name" required><br>
+
+    <label>Shop ID:</label>
+    <input type="number" name="shopID" required><br>
+
+    <label>Description:</label>
+    <input type="text" name="description"><br>
+
+    <label>Price:</label>
+    <input type="number" name="price" step="0.01" required><br>
+
+    <label>Stock:</label>
+    <input type="number" name="stock" required><br>
+
+    <button type="submit">Add Product</button>
+</form>
+
+<a href="/gui/">Back to Home</a>
+</body>
+</html>

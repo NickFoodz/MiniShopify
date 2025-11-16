@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<h1>Welcome, <span th:text="${customer.name}"></span>!</h1>
+<p>Your email: <span th:text="${customer.email}"></span></p>
+<form th:action="@{/gui/logout}" method="post" style="display:inline;">
+  <button type="submit">Logout</button>
+</form>
+
+<a href="/gui/">Back to Home</a>
+<a href="/gui/">Logout</a>
+
+</body>
+</html>

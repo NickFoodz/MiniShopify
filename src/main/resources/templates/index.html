@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title>MiniShopify</title>
@@ -10,7 +11,10 @@
 <nav>
   <a href="/gui/shops">View Shops</a> |
   <a href="/gui/add-product">Add Product</a> |
-  <a href="/gui/search">Search Products</a>
+  <a href="/gui/search">Search Products</a> |
+  <a href="/gui/dashboard">My Dashboard</a> |
+  <a th:href="@{/gui/login}" sec:authorize="!isAuthenticated()">Login</a>
+  <a th:href="@{/gui/logout}" sec:authorize="isAuthenticated()">Logout</a>
 </nav>
 
 <hr>

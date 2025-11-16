@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.*;
@@ -194,6 +195,7 @@ class GuiControllerIntegrationTest {
      * Tests if removing a product was successful
      */
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
     void testRemoveProductSuccess() throws Exception {
         // Create and save a shop
         Shop shop = new Shop();
@@ -236,6 +238,7 @@ class GuiControllerIntegrationTest {
      * Tests the behavior of removeProduct() - product not found
      */
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
     void testRemoveProductNotFound() throws Exception {
         // Create and save a shop
         Shop shop = new Shop();
@@ -254,6 +257,7 @@ class GuiControllerIntegrationTest {
      * Tests the behavior of removeProduct() - shop not found
      */
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
     void testRemoveProductShopNotFound() throws Exception {
         // Attempt to remove a product from a non-existent shop (ID 999)
         mockMvc.perform(post("/gui/remove-product")
@@ -267,6 +271,7 @@ class GuiControllerIntegrationTest {
      * Tests the behavior of removeProduct() - removes correct product when multiple exist
      */
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
     void testRemoveProductMultipleProducts() throws Exception {
         // Create and save a shop
         Shop shop = new Shop();
@@ -317,6 +322,7 @@ class GuiControllerIntegrationTest {
      * Tests the behavior of removeShop() - successful removal
      */
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
     void testRemoveShopSuccess() throws Exception {
         // Create and save a shop
         Shop shop = new Shop();
@@ -339,6 +345,7 @@ class GuiControllerIntegrationTest {
      * Tests the behavior of removeShop() - shop not found
      */
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
     void testRemoveShopNotFound() throws Exception {
         // Attempt to remove a non-existent shop (ID 999)
         mockMvc.perform(post("/gui/remove-shop")
@@ -351,6 +358,7 @@ class GuiControllerIntegrationTest {
      * Tests the behavior of removeShop() - shop with products is removed (cascade delete)
      */
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
     void testRemoveShopWithProducts() throws Exception {
         // Create and save a shop
         Shop shop = new Shop();
@@ -402,6 +410,7 @@ class GuiControllerIntegrationTest {
      * Tests the behavior of removeShop() - correct shop removed when multiple exist
      */
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
     void testRemoveShopMultipleShops() throws Exception {
         // Create and save multiple shops
         Shop shop1 = new Shop();

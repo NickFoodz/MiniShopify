@@ -21,6 +21,9 @@ public class Merchant {
     @OneToMany(mappedBy = "merchant", cascade = CascadeType.ALL)
     private List<Shop> shops;
 
+    @Enumerated(EnumType.STRING)
+    private UserType userType = UserType.MERCHANT;
+
     public Merchant() {
     }
 
@@ -113,5 +116,14 @@ public class Merchant {
      */
     public String getPassword() {
         return this.password;
+    }
+
+    /**
+     * Returns the type of user
+     * @return UserType, the type of user
+     */
+
+    public UserType getUserType() {
+        return this.userType;
     }
 }
