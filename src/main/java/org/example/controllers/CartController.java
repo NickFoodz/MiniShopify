@@ -35,6 +35,10 @@ public class CartController {
      */
     @GetMapping("/gui/customer/cart")
     public String viewCart(Model model, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/gui/login";
+        }
+
         String email = authentication.getName();
         Customer customer = customerRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
@@ -61,6 +65,10 @@ public class CartController {
                             @RequestParam(defaultValue = "1") int quantity,
                             Authentication authentication,
                             RedirectAttributes redirectAttributes) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/gui/login";
+        }
+
         try {
             String email = authentication.getName();
             Customer customer = customerRepository.findByEmail(email)
@@ -80,14 +88,14 @@ public class CartController {
             if (success) {
                 cartRepository.save(cart);
                 productRepository.save(product);
-                redirectAttributes.addFlashAttribute("success",
+                redirectAttributes.addFlashAttribute("message",
                         "Added " + quantity + " x " + product.getName() + " to cart!");
             } else {
                 redirectAttributes.addFlashAttribute("error",
                         "Not enough stock available for " + product.getName());
             }
 
-            return "redirect:/gui/shops/" + product.getShop().getId();
+            return "redirect:/gui/shops";
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error",
@@ -103,6 +111,10 @@ public class CartController {
     public String removeFromCart(@RequestParam Long productId,
                                  Authentication authentication,
                                  RedirectAttributes redirectAttributes) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/gui/login";
+        }
+
         try {
             String email = authentication.getName();
             Customer customer = customerRepository.findByEmail(email)
@@ -117,7 +129,7 @@ public class CartController {
             if (success) {
                 cartRepository.save(cart);
                 productRepository.save(product);
-                redirectAttributes.addFlashAttribute("success",
+                redirectAttributes.addFlashAttribute("message",
                         "Removed " + product.getName() + " from cart");
             } else {
                 redirectAttributes.addFlashAttribute("error",
@@ -140,6 +152,10 @@ public class CartController {
                                  @RequestParam int quantity,
                                  Authentication authentication,
                                  RedirectAttributes redirectAttributes) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/gui/login";
+        }
+
         try {
             String email = authentication.getName();
             Customer customer = customerRepository.findByEmail(email)
@@ -175,7 +191,7 @@ public class CartController {
 
             cartRepository.save(cart);
             productRepository.save(product);
-            redirectAttributes.addFlashAttribute("success", "Cart updated");
+            redirectAttributes.addFlashAttribute("message", "Cart updated");
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error",
@@ -191,6 +207,10 @@ public class CartController {
     @PostMapping("/gui/customer/cart/clear")
     public String clearCart(Authentication authentication,
                             RedirectAttributes redirectAttributes) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/gui/login";
+        }
+
         try {
             String email = authentication.getName();
             Customer customer = customerRepository.findByEmail(email)
@@ -200,7 +220,7 @@ public class CartController {
             cart.clearCart();
             cartRepository.save(cart);
 
-            redirectAttributes.addFlashAttribute("success", "Cart cleared");
+            redirectAttributes.addFlashAttribute("message", "Cart cleared");
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error",

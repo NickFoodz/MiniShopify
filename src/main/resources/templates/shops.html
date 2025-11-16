@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en-US">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
     <meta charset="UTF-8">
     <title>Shops</title>
@@ -26,7 +26,19 @@
         </form>
         <ul>
             <li th:each="product : ${shop.products}">
-                <span th:text="${product.name} + ', ProductID: ' + ${product.id} +', Stock:' + ${product.stock} + ', Price: ' + ${product.price} "></span>
+                <span th:text="${product.name} + ', ProductID: ' + ${product.id} +', Stock:' + ${product.stock} + ', Price: $' + ${product.price} "></span>
+
+                <!-- Add to Cart button for customers only -->
+                <span sec:authorize="hasRole('CUSTOMER')">
+                    <form th:action="@{/gui/customer/cart/add}" method="post" style="display:inline;">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" th:disabled="${product.stock == 0}">
+                            <span th:text="${product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}">Add to Cart</span>
+                        </button>
+                    </form>
+                </span>
+
                 <form th:action="@{/gui/remove-product}" method="post" style="display:inline;">
                     <input type="hidden" name="productId" th:value="${product.id}">
                     <input type="hidden" name="shopId" th:value="${shop.id}">
