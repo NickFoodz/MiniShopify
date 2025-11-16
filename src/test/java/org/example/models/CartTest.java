@@ -46,7 +46,6 @@ class CartTest {
         customer = new Customer("customer@test.com", "password123", "Test Customer");
         customer.setId(1L);
         cart = new Cart(customer);
-        cart.setCartID(1L);
     }
 
     @Test
@@ -70,7 +69,8 @@ class CartTest {
 
     @Test
     void testGetCartID() {
-        assertEquals(1L, cart.getCartID());
+        cart.setCartID(15L);
+        assertEquals(15L, cart.getCartID());
     }
 
     @Test

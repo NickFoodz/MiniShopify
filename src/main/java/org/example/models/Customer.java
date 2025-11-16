@@ -18,6 +18,12 @@ public class Customer {
 
     private String name;
 
+
+
+    @OneToOne(mappedBy="customer",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
+
+
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.CUSTOMER;
 
@@ -28,6 +34,7 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.name = name;
+        this.cart = new Cart();
     }
 
     // --- Getters & Setters ---
@@ -86,6 +93,14 @@ public class Customer {
      */
     public UserType getUserType() {
         return this.userType;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
 }
