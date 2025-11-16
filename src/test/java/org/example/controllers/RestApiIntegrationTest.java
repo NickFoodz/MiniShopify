@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.*;
@@ -55,6 +56,7 @@ class RestApiIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
 /**
  * Tests the behavior of testGetAllShops().
  */
@@ -75,6 +77,7 @@ class RestApiIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
 /**
  * Tests the behavior of testGetAllProducts().
  */
@@ -99,6 +102,7 @@ class RestApiIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
 /**
  * Tests the behavior of testGetAllMerchants().
  */
@@ -118,6 +122,7 @@ class RestApiIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
 /**
  * Tests the behavior of testGetShopById().
  */
@@ -132,6 +137,7 @@ class RestApiIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
 /**
  * Tests the behavior of testGetProductById().
  */
@@ -158,6 +164,7 @@ class RestApiIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
 /**
  * Tests the behavior of testCreateShopViaRestApi().
  */
@@ -180,6 +187,7 @@ class RestApiIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "merchant1", roles = {"MERCHANT"})
 /**
  * Tests the behavior of testGetNonExistentShop().
  */
