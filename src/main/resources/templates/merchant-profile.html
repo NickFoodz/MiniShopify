@@ -5,6 +5,9 @@
 </head>
 <body>
 <h1>Welcome, <span th:text="${merchant.name}">Merchant Name</span></h1>
+<form th:action="@{/gui/logout}" method="post" style="display:inline;">
+    <button type="submit">Logout</button>
+</form>
 
 <h2>Your Stores</h2>
 <ul>

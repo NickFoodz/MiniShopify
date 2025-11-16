@@ -134,7 +134,10 @@ public class SecurityConfig {
                         })
                         .permitAll())
                 .logout(logout -> logout.logoutUrl("/gui/logout")
+                        .logoutUrl("/gui/logout")
                         .logoutSuccessUrl("/gui/login?logout")
+                        .invalidateHttpSession(true)      // <--- clears session
+                        .deleteCookies("JSESSIONID")      // <--- deletes session cookie
                         .permitAll()
                 );
 
