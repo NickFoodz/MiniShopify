@@ -135,4 +135,36 @@ class ProductTest {
         testProduct.setShop(testShop2);
         assertEquals(testShop2, testProduct.getShop());
     }
+
+    /**
+     * Tests addStock() to add to the stock of the item
+     */
+    @Test
+    void addStock() {
+        Product testaddProduct = new Product();
+        testaddProduct.setId(6L);
+        testaddProduct.setName("Test Product");
+        testaddProduct.setDescription("Test Description");
+        testaddProduct.setPrice(1.0);
+        testaddProduct.setStock(8);
+        assertEquals(8, testaddProduct.getStock());
+        testaddProduct.addStock(1);
+        assertEquals(9, testaddProduct.getStock());
+    }
+
+    /**
+     * Tests behaviour of removeStock()
+     */
+    @Test
+    void removeStock() {
+        Product testRemoveProduct = new Product();
+        testRemoveProduct.setId(6L);
+        testRemoveProduct.setName("Test Product");
+        testRemoveProduct.setDescription("Test Description");
+        testRemoveProduct.setPrice(1.0);
+        testRemoveProduct.setStock(8);
+        assertFalse(testRemoveProduct.removeStock(9));
+        assertTrue(testRemoveProduct.removeStock(8));
+        assertEquals(0, testRemoveProduct.getStock());
+    }
 }

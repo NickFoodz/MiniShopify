@@ -8,10 +8,12 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CustomerTest {
 
     private Customer customer;
+    private Cart cart;
 
     @BeforeEach
     void setUp() {
@@ -20,6 +22,10 @@ public class CustomerTest {
        customer.setName("TestName");
        customer.setEmail("email@email.com");
        customer.setPassword("password");
+
+       //cart
+       cart = new Cart(customer);
+       customer.setCart(cart);
 
     }
 
@@ -103,4 +109,15 @@ public class CustomerTest {
         assertEquals(UserType.CUSTOMER, customer.getUserType());
     }
 
+    @Test
+    void getCart() {
+        assertEquals(cart, customer.getCart());
+    }
+
+    @Test
+    void setCart() {
+        Cart newCart = new Cart(customer);
+        customer.setCart(newCart);
+        assertEquals(newCart, customer.getCart());
+    }
 }

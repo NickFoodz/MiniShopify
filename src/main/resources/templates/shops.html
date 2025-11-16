@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en-US">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en-US">
 <head>
     <meta charset="UTF-8">
     <title>Shops</title>
@@ -8,7 +10,16 @@
 <h1>All Shops</h1>
 
 <a href="/gui/">Back to Home</a>
+<span sec:authorize="hasRole('CUSTOMER')"> | <a href="/gui/customer/cart">My Cart</a></span>
 <hr>
+
+<!-- Success/Error Messages -->
+<div th:if="${message}" style="color: green; font-weight: bold; padding: 10px; background-color: #d4edda; border: 1px solid #c3e6cb; margin-bottom: 15px;">
+    <p th:text="${message}"></p>
+</div>
+<div th:if="${error}" style="color: red; font-weight: bold; padding: 10px; background-color: #f8d7da; border: 1px solid #f5c6cb; margin-bottom: 15px;">
+    <p th:text="${error}"></p>
+</div>
 
 <form th:action="@{/gui/shops}" method="post">
     <input type="text" name="name" placeholder="Shop name" required>
@@ -26,7 +37,19 @@
         </form>
         <ul>
             <li th:each="product : ${shop.products}">
-                <span th:text="${product.name} + ', ProductID: ' + ${product.id}"></span>
+                <span th:text="${product.name} + ', ProductID: ' + ${product.id} +', Stock:' + ${product.stock} + ', Price: $' + ${product.price}"></span>
+
+                <!-- Add to Cart button for customers only -->
+                <span sec:authorize="hasRole('CUSTOMER')">
+                    <form th:action="@{/gui/customer/cart/add}" method="post" style="display:inline;">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" th:disabled="${product.stock == 0}">
+                            <span th:text="${product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}">Add to Cart</span>
+                        </button>
+                    </form>
+                </span>
+
                 <form th:action="@{/gui/remove-product}" method="post" style="display:inline;">
                     <input type="hidden" name="productId" th:value="${product.id}">
                     <input type="hidden" name="shopId" th:value="${shop.id}">

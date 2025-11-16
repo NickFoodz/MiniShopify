@@ -13,6 +13,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   <a href="/gui/add-product">Add Product</a> |
   <a href="/gui/search">Search Products</a> |
   <a href="/gui/dashboard">My Dashboard</a> |
+  <a th:href="@{/gui/customer/cart}" sec:authorize="hasRole('CUSTOMER')">My Cart</a> |
   <a th:href="@{/gui/login}" sec:authorize="!isAuthenticated()">Login</a>
   <a th:href="@{/gui/logout}" sec:authorize="isAuthenticated()">Logout</a>
 </nav>
