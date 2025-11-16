@@ -1,11 +1,14 @@
 package org.example.controllers;
 
-import org.example.models.Merchant;
-import org.example.models.Product;
-import org.example.models.Shop;
+import org.example.models.*;
+import org.example.repository.CustomerRepository;
 import org.example.repository.MerchantRepository;
 import org.example.repository.ProductRepository;
 import org.example.repository.ShopRepository;
+import org.example.security.CustomUserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +24,16 @@ public class GuiController {
     private final ShopRepository shopRepository;
     private final ProductRepository productRepository;
     private final MerchantRepository merchantRepository;
+    private final CustomerRepository customerRepository;
 
-    public GuiController(ShopRepository shopRepository, ProductRepository productRepository, MerchantRepository merchantRepository) {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public GuiController(ShopRepository shopRepository, ProductRepository productRepository, MerchantRepository merchantRepository, CustomerRepository customerRepository) {
         this.shopRepository = shopRepository;
         this.productRepository = productRepository;
         this.merchantRepository = merchantRepository;
+        this.customerRepository = customerRepository;
     }
 
     // Home page
@@ -174,6 +182,53 @@ public class GuiController {
     @GetMapping("/custom-error")
     public String showErrorPage() {
         return "custom-error";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login"; // Looks for login.html in templates/
+    }
+
+    @GetMapping("/register/merchant")
+    public String registerMerchant(Model model) {
+        model.addAttribute("merchant", new Merchant());
+        return "/register-merchant";
+    }
+
+    @PostMapping("/register/merchant")
+    public String processMerchant(Merchant merchant) {
+        merchant.setPassword(passwordEncoder.encode(merchant.getPassword()));
+        merchantRepository.save(merchant);
+
+        return "redirect:/gui/login?registered";
+
+    }
+
+    @GetMapping("/register/customer")
+    public String registerCustomer(Model model) {
+        model.addAttribute("customer", new Customer());
+        return "/register-customer";
+    }
+
+    @PostMapping("/register/customer")
+    public String processCustomer(Customer customer) {
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        customerRepository.save(customer);
+
+        return "redirect:/gui/login?registered";
+    }
+
+    @GetMapping("/dashboard")
+    public String dashboardRedirect(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        if (userDetails.getUserType() == UserType.MERCHANT) {
+            return "redirect:/gui/merchant/profile";
+        } else if (userDetails.getUserType() == UserType.CUSTOMER) {
+            return "redirect:/gui/customer/profile";
+        } else {
+            throw new RuntimeException("Unknown user type");
+        }
     }
 
 }

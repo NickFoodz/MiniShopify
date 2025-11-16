@@ -1,7 +1,7 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -18,8 +18,8 @@ public class Customer {
 
     private String name;
 
-    @OneToOne(mappedBy="customer",cascade = CascadeType.ALL, orphanRemoval = true)
-    private Cart cart;
+    @Enumerated(EnumType.STRING)
+    private UserType userType = UserType.CUSTOMER;
 
     // --- Constructors ---
     public Customer() {}
@@ -28,7 +28,6 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.name = name;
-        this.cart = new Cart(this);
     }
 
     // --- Getters & Setters ---
@@ -80,5 +79,13 @@ public class Customer {
      * @param name of the customer
      */
     public void setName(String name) { this.name = name; }
+
+    /**
+     * Returns the type of user
+     * @return UserType, the type of user
+     */
+    public UserType getUserType() {
+        return this.userType;
+    }
 
 }
