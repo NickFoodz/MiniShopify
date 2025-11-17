@@ -27,13 +27,7 @@
 
         <!-- Login/Logout -->
         <a th:href="@{/gui/login}" sec:authorize="!isAuthenticated()">Login</a>
-        <a th:href="@{/gui/register/customer}" sec:authorize="!isAuthenticated()">Sign Up</a>
-
-        <form th:action="@{/gui/logout}" method="post" style="display: inline;" sec:authorize="isAuthenticated()">
-            <button type="submit" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.9em;">
-                Logout
-            </button>
-        </form>
+        <a th:href="@{/gui/logout}" sec:authorize="isAuthenticated()">Logout</a>
     </nav>
 
     <hr>
