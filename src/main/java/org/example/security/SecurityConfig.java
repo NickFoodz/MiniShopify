@@ -1,7 +1,6 @@
 package org.example.security;
 
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.example.models.UserType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,11 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import jakarta.servlet.DispatcherType;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.web.filter.ForwardedHeaderFilter;
-import org.springframework.core.Ordered;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 
 /**
@@ -114,9 +109,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
-                .csrf(csrf -> csrf.disable())
+        // Check if we're in production (Azure sets this)
+        String environment = System.getenv("WEBSITE_SITE_NAME"); // Azure sets this
+        boolean isProduction = environment != null && !environment.isEmpty();
 
+        if (!isProduction) {
+            // Local development - disable CSRF
+            http.csrf(csrf -> csrf.disable());
+        } else {
+            // Production (Azure) - enable CSRF
+            http.csrf(csrf -> csrf
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            );
+        }
+
+        http
 
                 .authorizeHttpRequests(auth -> auth
 
@@ -164,13 +171,5 @@ public class SecurityConfig {
                         .permitAll()
                 );
         return http.build();
-    }
-    @Bean
-    public FilterRegistrationBean<ForwardedHeaderFilter> forwardedHeaderFilter() {
-        ForwardedHeaderFilter filter = new ForwardedHeaderFilter();
-        FilterRegistrationBean<ForwardedHeaderFilter> registration = new FilterRegistrationBean<>(filter);
-        registration.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.ASYNC, DispatcherType.ERROR);
-        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return registration;
     }
 }
