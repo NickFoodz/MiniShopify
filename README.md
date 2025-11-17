@@ -129,7 +129,8 @@ Mini-Shopify is a web-based e-commerce platform built with Spring Boot that allo
 - **Orphan Removal:** Enabled on Shop products and Cart items
 
 ## UML Class Diagram
-See `Diagrams/UMLClass_Diagram.png` for the complete PlantUML model diagram.
+<img width="716" height="1413" alt="image" src="https://github.com/user-attachments/assets/ff5b9d09-efa5-4021-9c24-8da3b40094f4" />
+
 
 ### Class Diagram Legend
 ![img.png](Diagrams/UMLClassDiagram_Legend.png)
