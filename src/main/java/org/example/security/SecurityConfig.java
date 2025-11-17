@@ -13,6 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 /**
  * Central configuration class for Spring Security.
  *
@@ -33,6 +37,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     /**
      * Defines the password encoder used to hash and verify passwords.
@@ -142,12 +148,12 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")      // <--- deletes session cookie
                         .permitAll()
                 );
-
         http.addFilterBefore((req, res, chain) -> {
             HttpServletRequest httpReq = (HttpServletRequest) req;
-            System.out.println("DEBUG URI = " + httpReq.getRequestURI());
+            logger.info("DEBUG URI = {}", httpReq.getRequestURI());
             chain.doFilter(req, res);
         }, UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }
