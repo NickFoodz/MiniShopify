@@ -192,7 +192,7 @@ public class GuiController {
     @GetMapping("/register/merchant")
     public String registerMerchant(Model model) {
         model.addAttribute("merchant", new Merchant());
-        return "/register-merchant";
+        return "register-merchant";
     }
 
     @PostMapping("/register/merchant")
@@ -207,7 +207,7 @@ public class GuiController {
     @GetMapping("/register/customer")
     public String registerCustomer(Model model) {
         model.addAttribute("customer", new Customer());
-        return "/register-customer";
+        return "register-customer";
     }
 
     @PostMapping("/register/customer")
