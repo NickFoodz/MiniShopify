@@ -105,22 +105,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        // Check if we're in production (Azure sets this)
-        String environment = System.getenv("WEBSITE_SITE_NAME"); // Azure sets this
-        boolean isProduction = environment != null && !environment.isEmpty();
-
-        if (!isProduction) {
-            // Local development - disable CSRF
-            http.csrf(csrf -> csrf.disable());
-        } else {
-            // Production (Azure) - enable CSRF
-            http.csrf(csrf -> csrf
-                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-            );
-        }
-
         http
-
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers(
@@ -128,6 +114,10 @@ public class SecurityConfig {
                                 "/gui/",
                                 "/gui/login",
                                 "/gui/register/**",
+                                "/gui/register/merchant/",
+                                "/gui/register/merchant",
+                                "/gui/register/customer/",
+                                "/gui/register/customer",
                                 "/gui/shops",
                                 "/gui/search",
                                 "/css/**",

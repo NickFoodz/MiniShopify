@@ -13,21 +13,18 @@
 
     <nav>
         <a href="/gui/shops">View Shops</a> |
-
-        <!-- Add Product - Merchant Only -->
         <a href="/gui/add-product" sec:authorize="hasRole('MERCHANT')">Add Product</a>
         <span sec:authorize="hasRole('MERCHANT')"> | </span>
-
         <a href="/gui/search">Search Products</a> |
-        <a href="/gui/dashboard">My Dashboard</a> |
-
-        <!-- My Cart - Customer Only -->
+        <a href="/gui/login">Login/Dashboard</a> |
         <a th:href="@{/gui/customer/cart}" sec:authorize="hasRole('CUSTOMER')">My Cart</a>
         <span sec:authorize="hasRole('CUSTOMER')"> | </span>
 
-        <!-- Login/Logout -->
-        <a th:href="@{/gui/login}" sec:authorize="!isAuthenticated()">Login</a>
-        <a th:href="@{/gui/logout}" sec:authorize="isAuthenticated()">Logout</a>
+        <form th:action="@{/gui/logout}" method="post" style="display: inline;">
+            <button type="submit" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.9em;">
+                Logout
+            </button>
+        </form>
     </nav>
 
     <hr>
