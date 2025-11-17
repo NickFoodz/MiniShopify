@@ -34,6 +34,7 @@ entity Shop {
   + void setMerchant(Merchant merchant)
   + List<Product> getProducts()
   + void addProduct(Product product)
+  + void removeProduct(long productId)
 }
 
 entity Product {
@@ -58,8 +59,62 @@ entity Product {
   + void setShop(Shop shop)
 }
 
+entity Customer {
+  - Long id
+  - String name
+  - String email
+  - UserType userType
+  - Cart cart
+  --
+  + Long getId()
+  + void setId(Long id)
+  + String getName()
+  + void setName(String name)
+  + String getEmail()
+  + void setEmail(String email)
+  + UserType getUserType()
+  + Cart getCart()
+  + void setCart(Cart cart)
+}
+
+entity Cart {
+  - Long cartID
+  - List<CartItem> cartItems
+  --
+  + Long getCartID()
+  + List<CartItem> getCartItems()
+  + void addItem(CartItem item)
+  + void removeItem(Long itemId)
+}
+
+entity CartItem {
+  - Long id
+  - int quantity
+  - Product product
+  - Cart cart
+  --
+  + Long getId()
+  + void setId(Long id)
+  + int getQuantity()
+  + void setQuantity(int quantity)
+  + Product getProduct()
+  + void setProduct(Product product)
+  + Cart getCart()
+  + void setCart(Cart cart)
+}
+
+enum UserType {
+  CUSTOMER
+  MERCHANT
+}
+
+
 ' Relationships
 Merchant "1" -- "0..*" Shop : owns >
 Shop "1" -- "0..*" Product : contains >
+
+Customer "1" -- "1" Cart : has >
+Cart "1" -- "0..*" CartItem : contains >
+CartItem "*" --> "1" Product : references >
 
 @enduml
