@@ -4,6 +4,7 @@ package org.example.security;
 import org.example.models.UserType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -137,7 +138,17 @@ public class SecurityConfig {
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .successHandler((request, response, authentication) -> {
+                            if (authentication == null ||
+                                    !authentication.isAuthenticated() ||
+                                    authentication instanceof AnonymousAuthenticationToken) {
+
+                                // Do NOT redirect, let Spring handle the request normally
+                                response.sendRedirect("/gui/login");
+                                return;
+                            }
+
                             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
                             if (userDetails.getUserType() == UserType.MERCHANT) {
                                 response.sendRedirect("/gui/merchant/profile");
                             } else {
