@@ -105,11 +105,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/gui","/gui/login", "/gui/register/**", "/", "/gui/shops", "/gui/",
-                                "/gui/search", "/css/**").permitAll()
+                                "/gui/search", "/gui/add-product", "/css/**").permitAll()
 
                         // merchant only pages
                         .requestMatchers("/gui/merchant/**").hasRole("MERCHANT")
-                        .requestMatchers("/gui/add-product").hasRole("MERCHANT")
 
                         // customer only pages
                         .requestMatchers("/gui/customer/**").hasRole("CUSTOMER")
