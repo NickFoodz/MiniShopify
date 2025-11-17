@@ -9,6 +9,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,6 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+
+import java.util.List;
 
 /**
  * Central configuration class for Spring Security.
@@ -74,6 +80,29 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 
         return config.getAuthenticationManager();
+    }
+
+    /**
+     * Creates and returns a {@link org.springframework.security.core.session.SessionRegistry} bean.
+     * <p>
+     * The {@code SessionRegistry} is used by Spring Security to keep track of
+     * authenticated user sessions. It maintains a list of principals and their
+     * associated session IDs, enabling features such as:
+     * <ul>
+     *     <li>Session concurrency control (e.g., limiting the number of active sessions per user)</li>
+     *     <li>Tracking and expiring sessions programmatically</li>
+     *     <li>Retrieving all active sessions for a given user</li>
+     * </ul>
+     * <p>
+     * Registering this bean allows Spring Security’s session management features—
+     * such as {@code maximumSessions()}, concurrent session control, and session
+     * invalidation—to function correctly.
+     *
+     * @return a new {@link org.springframework.security.core.session.SessionRegistry} instance
+     */
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
     }
 
     /**
@@ -156,6 +185,11 @@ public class SecurityConfig {
                             }
                         })
                         .permitAll())
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false)
+                        .sessionRegistry(sessionRegistry())
+                )
                 .logout(logout -> logout.logoutUrl("/gui/logout")
                         .logoutUrl("/gui/logout")
                         .logoutSuccessUrl("/gui/login?logout")
