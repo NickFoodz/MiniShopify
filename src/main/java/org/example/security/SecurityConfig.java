@@ -1,6 +1,7 @@
 package org.example.security;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.models.UserType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -197,6 +198,15 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")      // <--- deletes session cookie
                         .permitAll()
                 );
+
+        // Debug filter to log every incoming URI
+        http.addFilterBefore((req, res, chain) -> {
+            HttpServletRequest httpReq = (HttpServletRequest) req;
+            System.out.println("DEBUG URI = " + httpReq.getRequestURI());
+            chain.doFilter(req, res);
+        }, UsernamePasswordAuthenticationFilter.class);
+
+
         return http.build();
     }
 }
