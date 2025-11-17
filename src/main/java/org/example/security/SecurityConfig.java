@@ -1,5 +1,6 @@
 package org.example.security;
 
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.models.UserType;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.DispatcherType;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.web.filter.ForwardedHeaderFilter;
+import org.springframework.core.Ordered;
 
 
 /**
@@ -159,5 +165,12 @@ public class SecurityConfig {
                 );
         return http.build();
     }
-
+    @Bean
+    public FilterRegistrationBean<ForwardedHeaderFilter> forwardedHeaderFilter() {
+        ForwardedHeaderFilter filter = new ForwardedHeaderFilter();
+        FilterRegistrationBean<ForwardedHeaderFilter> registration = new FilterRegistrationBean<>(filter);
+        registration.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.ASYNC, DispatcherType.ERROR);
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return registration;
+    }
 }
