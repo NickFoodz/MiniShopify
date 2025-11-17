@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Central configuration class for Spring Security.
- *
+ * <p>
  * This class defines all security-related behaviors for the application,
  * including password encoding, authentication handling, request authorization,
  * login flow, and logout behavior. Spring Boot automatically detects this class
@@ -29,8 +29,8 @@ import org.slf4j.LoggerFactory;
  * AuthenticationManager— performs the authentication process by delegating to the
  * configured authentication mechanism (such as a custom UserDetailsService)
  * SecurityFilterChain— defines URL access rules, form login setup and logout behavior.
- *
- *
+ * <p>
+ * <p>
  * Spring Security applies these settings to every incoming HTTP request to determine
  * authentication requirements and authorization rules.</p>
  */
@@ -56,17 +56,16 @@ public class SecurityConfig {
 
     /**
      * Configures and exposes the {@link AuthenticationManager} as a Spring bean.
-     *
+     * <p>
      * The AuthenticationManager is the central Spring Security component responsible
      * for performing authentication attempts (such as verifying email/password credentials).
      * Spring Security automatically uses this bean during form login processing.</p>
-     *
+     * <p>
      * By delegating to {@link AuthenticationConfiguration#getAuthenticationManager()},
      * we allow Spring to build the AuthenticationManager using all registered
      * authentication providers, such as:
-     *
-     *  Password encoder configuration
-     *
+     * <p>
+     * Password encoder configuration
      *
      * @param config The authentication configuration provided by Spring, containing
      *               the fully initialized authentication setup.
@@ -84,21 +83,21 @@ public class SecurityConfig {
      * and returning a {@link SecurityFilterChain}. The SecurityFilterChain determines
      * how HTTP requests are secured, what URLs require authentication, and how login
      * and logout operations behave.
-     *
+     * <p>
      * This configuration includes:
-     *
+     * <p>
      * Disabling CSRF— useful during development or when the app
-     *       does not use traditional form submissions.
-     *
-     *  Authorization rules — publicly accessible pages, merchant-only
-     *       pages, customer-only pages, and secure fallback rules.
-     *
-     *  Form login configuration — custom login page, custom username
-     *       parameter ("email"), and redirect behavior after successful authentication.
-     *
-     *  Logout configuration</strong> — custom logout URL and redirect path.
-     *
-     *
+     * does not use traditional form submissions.
+     * <p>
+     * Authorization rules — publicly accessible pages, merchant-only
+     * pages, customer-only pages, and secure fallback rules.
+     * <p>
+     * Form login configuration — custom login page, custom username
+     * parameter ("email"), and redirect behavior after successful authentication.
+     * <p>
+     * Logout configuration</strong> — custom logout URL and redirect path.
+     * <p>
+     * <p>
      * Spring Security applies these rules to every incoming HTTP request to determine
      * how access should be granted or denied.
      *
@@ -111,10 +110,20 @@ public class SecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
+
+
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/gui","/gui/login", "/gui/register/**", "/", "/gui/shops", "/gui/",
-                                "/gui/search", "/gui/add-product", "/css/**").permitAll()
+                        .requestMatchers(
+                                "/gui",
+                                "/gui/",
+                                "/gui/login",
+                                "/gui/register/**",
+                                "/gui/shops",
+                                "/gui/search",
+                                "/css/**",
+                                "/gui/add-product"
+                        ).permitAll()
 
                         // merchant only pages
                         .requestMatchers("/gui/merchant/**").hasRole("MERCHANT")
@@ -127,7 +136,7 @@ public class SecurityConfig {
 
                         // any other request
                         .anyRequest().authenticated()
-        )
+                )
                 .formLogin(login -> login
                         .loginPage("/gui/login")
                         .usernameParameter("email")
@@ -148,13 +157,6 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")      // <--- deletes session cookie
                         .permitAll()
                 );
-        http.addFilterBefore((req, res, chain) -> {
-            HttpServletRequest httpReq = (HttpServletRequest) req;
-            logger.info("DEBUG URI = {}", httpReq.getRequestURI());
-            chain.doFilter(req, res);
-        }, UsernamePasswordAuthenticationFilter.class);
-
-
         return http.build();
     }
 
