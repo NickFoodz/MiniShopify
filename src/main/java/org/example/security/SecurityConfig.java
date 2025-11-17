@@ -1,5 +1,6 @@
 package org.example.security;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.models.UserType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Central configuration class for Spring Security.
@@ -100,6 +102,7 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
@@ -139,6 +142,12 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")      // <--- deletes session cookie
                         .permitAll()
                 );
+
+        http.addFilterBefore((req, res, chain) -> {
+            HttpServletRequest httpReq = (HttpServletRequest) req;
+            System.out.println("DEBUG URI = " + httpReq.getRequestURI());
+            chain.doFilter(req, res);
+        }, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
