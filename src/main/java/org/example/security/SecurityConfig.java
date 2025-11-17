@@ -112,15 +112,11 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/gui",
                                 "/gui/",
+                                "/css/**",
                                 "/gui/login",
                                 "/gui/register/**",
-                                "/gui/register/merchant/",
-                                "/gui/register/merchant",
-                                "/gui/register/customer/",
-                                "/gui/register/customer",
                                 "/gui/shops",
                                 "/gui/search",
-                                "/css/**",
                                 "/gui/add-product"
                         ).permitAll()
 
