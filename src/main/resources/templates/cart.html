@@ -2,9 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Shopping Cart</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - MiniShopify</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Cart-specific styling */
+        .quantity-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-input {
+            width: 80px;
+            padding: 8px 10px;
+            font-size: 1em;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+        }
+
+        .quantity-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        table td {
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -13,24 +39,24 @@
     <nav>
         <a href="/gui/">Home</a> |
         <a href="/gui/shops">View Shops</a> |
-        <a href="/gui/customer/profile">My Dashboard</a> |
+        <a href="/gui/customer/profile">My Dashboard</a>
     </nav>
 
     <hr>
 
     <!-- Success/Error Messages -->
-    <div th:if="${message}">
-        <p style="color: green;" th:text="${message}"></p>
+    <div th:if="${message}" class="alert alert-success">
+        <p th:text="${message}"></p>
     </div>
-    <div th:if="${error}">
-        <p style="color: red;" th:text="${error}"></p>
+    <div th:if="${error}" class="alert alert-error">
+        <p th:text="${error}"></p>
     </div>
 
     <!-- Empty Cart State -->
-    <div th:if="${#lists.isEmpty(cartItems)}">
+    <div th:if="${#lists.isEmpty(cartItems)}" class="section" style="text-align: center;">
         <h2>Your cart is empty</h2>
         <p>Start shopping and add some items to your cart.</p>
-        <p><a href="/gui/shops">Browse Shops</a></p>
+        <a href="/gui/shops" class="btn btn-primary" style="margin-top: 20px;">Browse Shops</a>
     </div>
 
     <!-- Cart Items -->
@@ -56,20 +82,24 @@
                 <td th:text="${item.product.shop.name}">Shop Name</td>
                 <td>$<span th:text="${#numbers.formatDecimal(item.product.price, 1, 2)}">0.00</span></td>
                 <td>
-                    <form th:action="@{/gui/customer/cart/update}" method="post" style="display: inline;">
+                    <form th:action="@{/gui/customer/cart/update}" method="post" style="display: flex; align-items: center; gap: 10px;">
                         <input type="hidden" name="productId" th:value="${item.product.id}"/>
                         <input type="number" name="quantity" th:value="${item.quantity}"
                                min="1" th:max="${item.product.stock + item.quantity}"
-                               style="width: 60px;"/>
-                        <button type="submit">Update</button>
+                               style="width: 80px; padding: 8px; font-size: 1em;"/>
+                        <button type="submit" class="btn btn-primary" style="padding: 8px 16px;">Update</button>
                     </form>
                 </td>
                 <td>$<span th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 1, 2)}">0.00</span>
                 </td>
                 <td>
+                    <!-- Remove Button - RED -->
                     <form th:action="@{/gui/customer/cart/remove}" method="post" style="display: inline;">
                         <input type="hidden" name="productId" th:value="${item.product.id}"/>
-                        <button type="submit" class="btn-danger">Remove</button>
+                        <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Remove this item from cart?')">
+                            Remove
+                        </button>
                     </form>
                 </td>
             </tr>
@@ -79,22 +109,32 @@
         <hr>
 
         <!-- Cart Summary -->
-        <h3>Cart Summary</h3>
-        <p><strong>Total Items:</strong> <span th:text="${#lists.size(cartItems)}">0</span></p>
-        <p><strong>Total Price:</strong> $<span th:text="${#numbers.formatDecimal(total, 1, 2)}">0.00</span></p>
+        <div class="section">
+            <h3>Cart Summary</h3>
+            <p><strong>Total Items:</strong> <span th:text="${#lists.size(cartItems)}">0</span></p>
+            <p style="font-size: 1.5em; color: var(--primary);">
+                <strong>Total Price:</strong> $<span th:text="${#numbers.formatDecimal(total, 1, 2)}">0.00</span>
+            </p>
+        </div>
 
         <hr>
 
         <!-- Cart Actions -->
-        <form th:action="@{/gui/customer/cart/clear}" method="post" style="display: inline;">
-            <button type="submit" class="btn-danger" onclick="return confirm('Are you sure you want to clear your cart?')">
-                Clear Cart
-            </button>
-        </form>
+        <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 20px;">
+            <!-- Clear Cart Button - RED -->
+            <form th:action="@{/gui/customer/cart/clear}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger"
+                        onclick="return confirm('Are you sure you want to clear your entire cart?')">
+                    Clear Cart
+                </button>
+            </form>
 
-        <a href="/gui/customer/checkout">
-            <button type="button">Proceed to Checkout</button>
-        </a>
+            <a href="/gui/customer/checkout">
+                <button type="button" class="btn btn-primary btn-large">
+                    Proceed to Checkout
+                </button>
+            </a>
+        </div>
     </div>
 </div>
 </body>

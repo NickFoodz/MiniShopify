@@ -30,10 +30,10 @@
     --border-color: #ddd;
     --border-light: #eee;
 
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-    --shadow-md: 0 4px 15px rgba(0,0,0,0.1);
-    --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
-    --shadow-xl: 0 20px 60px rgba(0,0,0,0.2);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.2);
 
     --transition: all 0.3s ease;
     --border-radius: 12px;
@@ -672,17 +672,41 @@ li:last-child {
 /* ========================================
    UTILITY CLASSES
    ======================================== */
-.mt-10 { margin-top: 10px; }
-.mt-20 { margin-top: 20px; }
-.mt-30 { margin-top: 30px; }
+.mt-10 {
+    margin-top: 10px;
+}
 
-.mb-10 { margin-bottom: 10px; }
-.mb-20 { margin-bottom: 20px; }
-.mb-30 { margin-bottom: 30px; }
+.mt-20 {
+    margin-top: 20px;
+}
 
-.p-10 { padding: 10px; }
-.p-20 { padding: 20px; }
-.p-30 { padding: 30px; }
+.mt-30 {
+    margin-top: 30px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mb-30 {
+    margin-bottom: 30px;
+}
+
+.p-10 {
+    padding: 10px;
+}
+
+.p-20 {
+    padding: 20px;
+}
+
+.p-30 {
+    padding: 30px;
+}
 
 .flex {
     display: flex;
@@ -700,9 +724,17 @@ li:last-child {
     align-items: center;
 }
 
-.gap-10 { gap: 10px; }
-.gap-15 { gap: 15px; }
-.gap-20 { gap: 20px; }
+.gap-10 {
+    gap: 10px;
+}
+
+.gap-15 {
+    gap: 15px;
+}
+
+.gap-20 {
+    gap: 20px;
+}
 
 .hidden {
     display: none;
@@ -722,8 +754,12 @@ li:last-child {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* ========================================
@@ -822,4 +858,106 @@ li:last-child {
     .btn {
         display: none;
     }
+}
+
+/* ========================================
+   CART TABLE SPECIFIC STYLE
+   ======================================== */
+
+/* Better table cell alignment */
+table td {
+    vertical-align: middle;
+}
+
+/* Quantity update form styling */
+.quantity-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+.quantity-input {
+    width: 80px !important;
+    padding: 8px 10px !important;
+    font-size: 1em !important;
+    text-align: center;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+}
+
+.quantity-input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+/* Small buttons for inline forms */
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9em;
+}
+
+/* Better table cell alignment */
+table td {
+    vertical-align: middle;
+}
+
+/* Quantity update form styling */
+.quantity-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+.quantity-input {
+    width: 80px !important;
+    padding: 8px 10px !important;
+    font-size: 1em !important;
+    text-align: center;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+}
+
+.quantity-input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+/* Small buttons for inline forms */
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9em;
+}
+
+/* ========================================
+   BUTTON SIZE VARIATIONS
+   ======================================== */
+
+/* Small buttons for inline forms and compact spaces */
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9em;
+}
+
+/* Medium buttons (default) */
+.btn-medium {
+    padding: 12px 24px;
+    font-size: 1em;
+}
+
+/* Large buttons for primary actions */
+.btn-large {
+    padding: 16px 32px;
+    font-size: 1.2em;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Extra small buttons for very tight spaces */
+.btn-xs {
+    padding: 6px 12px;
+    font-size: 0.85em;
 }
