@@ -11,12 +11,11 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartID;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> cartItems;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<CartItem> cartItems =  new ArrayList<>();
 
     @OneToOne
-    @MapsId
-    @JoinColumn(name="cartID")
+    @JoinColumn(name="customer_id")
     private Customer customer;
 
     /**
@@ -32,7 +31,6 @@ public class Cart {
      */
     public Cart(Customer customer) {
         this.customer = customer;
-        this.cartItems = new ArrayList<>();
     }
 
     /**
