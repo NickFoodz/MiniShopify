@@ -2,8 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Merchant Profile</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+<div class="container">
 <h1>Welcome, <span th:text="${merchant.name}">Merchant Name</span></h1>
 <form th:action="@{/gui/logout}" method="post" style="display:inline;">
     <button type="submit">Logout</button>
@@ -16,7 +19,7 @@
 
         <form th:action="@{/gui/merchant/remove-shop}" method="post" style="display:inline;">
             <input type="hidden" name="shopId" th:value="${shop.id}">
-            <button type="submit">Remove Shop</button>
+            <button type="submit" class="btn-danger">Remove Shop</button>
         </form>
 
         <ul>
@@ -25,7 +28,7 @@
                 <form th:action="@{/gui/merchant/remove-product}" method="post" style="display:inline;">
                     <input type="hidden" name="productId" th:value="${product.id}">
                     <input type="hidden" name="shopId" th:value="${shop.id}">
-                    <button type="submit">Remove Product</button>
+                    <button type="submit" clsss="btn-danger">Remove Product</button>
                 </form>
             </li>
         </ul>
@@ -61,5 +64,6 @@
 </form>
 
 <a href="/gui/">Back to Home</a>
+</div>
 </body>
 </html>

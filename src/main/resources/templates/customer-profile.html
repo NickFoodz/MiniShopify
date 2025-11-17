@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-
+<div class="container">
 <h1>Welcome, <span th:text="${customer.name}"></span>!</h1>
 <p>Your email: <span th:text="${customer.email}"></span></p>
 <form th:action="@{/gui/logout}" method="post" style="display:inline;">
@@ -14,6 +16,6 @@
 
 <a href="/gui/">Back to Home</a>
 <a href="/gui/">Logout</a>
-
+</div>
 </body>
 </html>

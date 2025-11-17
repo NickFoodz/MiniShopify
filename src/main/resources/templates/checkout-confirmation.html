@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - MiniShopify</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="container confirmation-page">
+    <div class="success-icon">✓</div>
+
+    <h1>Order Confirmed!</h1>
+    <p class="subtitle">Thank you for your purchase</p>
+
+    <div class="alert alert-success">
+        <p th:text="${message}">Your order has been placed successfully!</p>
+    </div>
+
+    <div class="order-details" th:if="${orderTotal}">
+        <h2>Order Summary</h2>
+        <p><strong>Order Total:</strong> $<span th:text="${#numbers.formatDecimal(orderTotal, 1, 2)}">0.00</span></p>
+        <p><strong>Confirmation sent to:</strong> <span th:text="${orderEmail}">email@example.com</span></p>
+    </div>
+
+    <div class="note">
+        <p>A confirmation email has been sent to your email address with order details.</p>
+        <p>Your order will be processed and shipped within 2-3 business days.</p>
+    </div>
+
+    <div class="actions">
+        <a href="/gui/shops" class="btn btn-primary">Continue Shopping</a>
+        <a href="/gui/customer/profile" class="btn btn-secondary">My Dashboard</a>
+    </div>
+</div>
+</body>
+</html>

@@ -3,43 +3,45 @@
 <head>
     <title>Login</title>
     <meta charset="UTF-8"/>
+
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+<div class="container">
+    <h2>Login</h2>
 
-<h2>Login</h2>
+    <p>
+        <a href="/gui/">Back to home</a>
+    </p>
 
-<p>
-    <a href="/gui/">Back to home</a>
-</p>
-
-<!-- Error message -->
-<div th:if="${param.error}">
-    <p style="color: red;">Invalid email or password.</p>
-</div>
-
-<!-- Logout message -->
-<div th:if="${param.logout}">
-    <p style="color: green;">You have been logged out.</p>
-</div>
-
-<form method="post" action="/gui/login">
-    <div>
-        <label>Email:</label>
-        <input type="text" name="email" required />
+    <!-- Error message -->
+    <div th:if="${param.error}">
+        <p style="color: red;">Invalid email or password.</p>
     </div>
 
-    <div>
-        <label>Password:</label>
-        <input type="password" name="password" required />
+    <!-- Logout message -->
+    <div th:if="${param.logout}">
+        <p style="color: green;">You have been logged out.</p>
     </div>
 
-    <button type="submit">Login</button>
-</form>
+    <form method="post" action="/gui/login">
+        <div>
+            <label>Email:</label>
+            <input type="text" name="email" required/>
+        </div>
 
-<p>
-    <a href="/gui/register/merchant">Register as Merchant</a> |
-    <a href="/gui/register/customer">Register as Customer</a>
-</p>
+        <div>
+            <label>Password:</label>
+            <input type="password" name="password" required/>
+        </div>
 
+        <button type="submit">Login</button>
+    </form>
+
+    <p>
+        <a href="/gui/register/merchant">Register as Merchant</a> |
+        <a href="/gui/register/customer">Register as Customer</a>
+    </p>
+</div>
 </body>
 </html>
