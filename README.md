@@ -321,6 +321,7 @@ mvn test
 - Search functionality (by shop name and category)
 
 ### Planned for Next Sprint
+* Fix bug with register on Azure deployment 
 * Shop categories functionality
 * Order history tracking for customers
 * Product reviews and ratings
