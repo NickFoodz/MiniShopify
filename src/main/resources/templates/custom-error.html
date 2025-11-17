@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Error</title>
+    <title>Error</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1>Oops, Something went wrong</h1>
-<p th:text="${error}"> Error</p>
-<p th:text="${message}">No error message to display</p>
-<p th:text="${path}"></p>
+<div class="container">
+    <h1>Oops, Something went wrong</h1>
+    <p th:text="${error}"> Error</p>
+    <p th:text="${message}">No error message to display</p>
+    <p th:text="${path}"></p>
+</div>
 </body>
 </html>

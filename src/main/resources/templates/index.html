@@ -1,26 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <meta charset="UTF-8">
-  <title>MiniShopify</title>
+    <meta charset="UTF-8">
+    <title>MiniShopify</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1>MiniShopify Dashboard</h1>
+<div class="container">
+    <h1>MiniShopify Dashboard</h1>
 
-<nav>
-  <a href="/gui/shops">View Shops</a> |
-  <a href="/gui/add-product">Add Product</a> |
-  <a href="/gui/search">Search Products</a> |
-  <a href="/gui/dashboard">My Dashboard</a> |
-  <a th:href="@{/gui/customer/cart}" sec:authorize="hasRole('CUSTOMER')">My Cart</a> |
-  <a th:href="@{/gui/login}" sec:authorize="!isAuthenticated()">Login</a>
-  <a th:href="@{/gui/logout}" sec:authorize="isAuthenticated()">Logout</a>
-</nav>
+    <nav>
+        <a href="/gui/shops">View Shops</a> |
 
-<hr>
+        <!-- Add Product - Merchant Only -->
+        <a href="/gui/add-product" sec:authorize="hasRole('MERCHANT')">Add Product</a>
+        <span sec:authorize="hasRole('MERCHANT')"> | </span>
 
-<h2>Welcome</h2>
-<p>Use the links above to manage your shops and products.</p>
+        <a href="/gui/search">Search Products</a> |
+        <a href="/gui/dashboard">My Dashboard</a> |
+
+        <!-- My Cart - Customer Only -->
+        <a th:href="@{/gui/customer/cart}" sec:authorize="hasRole('CUSTOMER')">My Cart</a>
+        <span sec:authorize="hasRole('CUSTOMER')"> | </span>
+
+        <!-- Login/Logout -->
+        <a th:href="@{/gui/login}" sec:authorize="!isAuthenticated()">Login</a>
+        <a th:href="@{/gui/register/customer}" sec:authorize="!isAuthenticated()">Sign Up</a>
+
+        <form th:action="@{/gui/logout}" method="post" style="display: inline;" sec:authorize="isAuthenticated()">
+            <button type="submit" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.9em;">
+                Logout
+            </button>
+        </form>
+    </nav>
+
+    <hr>
+
+    <h2>Welcome</h2>
+    <p>Use the links above to manage your shops and products.</p>
+</div>
 </body>
 </html>

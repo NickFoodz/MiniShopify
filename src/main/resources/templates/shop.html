@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${shop.name} + ' - Details'">Shop Details</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+<div class="container">
     <h1 th:text="${shop.name}">Shop Name</h1>
 
     <ul>
@@ -12,5 +15,6 @@
             <span th:text="${product.name} + ', ProductID: ' + ${product.id}"></span>y7
         </li>
     </ul>
+</div>
 </body>
 </html>

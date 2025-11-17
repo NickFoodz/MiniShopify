@@ -34,7 +34,8 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.name = name;
-        this.cart = new Cart();
+        Cart cart = new Cart(this);
+        this.cart = cart;
     }
 
     // --- Getters & Setters ---
