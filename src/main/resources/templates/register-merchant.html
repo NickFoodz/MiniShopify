@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Merchant Registration</title>
+    <title>Merchant Registration</title>
 
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <div class="container">
-<h2>Merchant Registration</h2>
+    <h2>Merchant Registration</h2>
 
-<p>
-  <a href="/gui/login">Back to Login</a>
-</p>
+    <p>
+        <a href="/gui/login">Back to Login</a>
+    </p>
+    <!-- ERROR MESSAGE -->
+    <div th:if="${error}" class="alert alert-error">
+        <p th:text="${error}"></p>
+    </div>
 
-<form th:action="@{/gui/register/merchant}" th:object="${merchant}" method="post">
+    <form th:action="@{/gui/register/merchant}" th:object="${merchant}" method="post">
 
-  <label>Name:</label>
-  <input type="text" th:field="*{name}" required /><br/>
+        <label>Name:</label>
+        <input type="text" th:field="*{name}" required/><br/>
 
-  <label>Email:</label>
-  <input type="email" th:field="*{email}" required /><br/>
+        <label>Email:</label>
+        <input type="email" th:field="*{email}" required/><br/>
 
-  <label>Password:</label>
-  <input type="password" th:field="*{password}" required /><br/>
+        <label>Password:</label>
+        <input type="password" th:field="*{password}" required/><br/>
 
-  <button type="submit">Register</button>
-</form>
+        <button type="submit">Register</button>
+    </form>
 </div>
 </body>
 </html>
