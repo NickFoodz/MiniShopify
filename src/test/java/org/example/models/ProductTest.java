@@ -26,6 +26,7 @@ class ProductTest {
         testProduct.setStock(1);
         testShop = new Shop();
         testProduct.setShop(testShop);
+        testProduct.setImageUrl("Test");
 
     }
 
@@ -166,5 +167,16 @@ class ProductTest {
         assertFalse(testRemoveProduct.removeStock(9));
         assertTrue(testRemoveProduct.removeStock(8));
         assertEquals(0, testRemoveProduct.getStock());
+    }
+
+    @Test
+    void getImageUrl() {
+        assertEquals("Test", testProduct.getImageUrl());
+    }
+
+    @Test
+    void setImageUrl() {
+        testProduct.setImageUrl("Test1");
+        assertEquals("Test1", testProduct.getImageUrl());
     }
 }

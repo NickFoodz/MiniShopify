@@ -29,17 +29,6 @@ public class    ShopAppApplication {
         SpringApplication.run(ShopAppApplication.class, args);
     }
 
-    /**
-     * Adds link to spring application to click and view localhost of GUI easily
-     * @return log args
-     */
-    @Bean
-    public CommandLineRunner linkToLocalHost() {
-        return args -> {
-            log.info("\n=== Application Ready ===");
-            log.info("Web interface: http://localhost:8080/gui");
-        };
-    }
 
     /**
      * Uses Faker to generate random merchants, shops, and products
@@ -94,7 +83,7 @@ public class    ShopAppApplication {
 
             log.info("💾 Faker data successfully loaded:");
             log.info("→ 10 merchants, 30 shops, 150 products created.");
-            log.info("Web interface: http://localhost:8080/gui");
+            log.info("Web interface: http://localhost:8080/gui/");
 
         };
     }

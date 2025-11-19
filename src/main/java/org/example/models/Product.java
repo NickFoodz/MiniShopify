@@ -14,6 +14,10 @@ public class Product {
     private double price;
     private int stock;
 
+
+
+    private String imageUrl = "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg";
+
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
@@ -140,5 +144,13 @@ public class Product {
      */
     public void setShop(Shop shop) {
         this.shop = shop;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
