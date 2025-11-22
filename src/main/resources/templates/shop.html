@@ -3,19 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${shop.name} + ' - Details'">Shop Details</title>
-
     <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Product card styling */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 15px;
+        }
+
+        .product-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+
+        /* Stock status badges */
+        .stock-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .stock-high {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .stock-low {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .stock-out {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .stock-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0;
+            font-size: 0.95em;
+        }
+
+        .stock-icon {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .stock-icon.high {
+            background: #28a745;
+        }
+
+        .stock-icon.low {
+            background: #ffc107;
+        }
+
+        .stock-icon.out {
+            background: #dc3545;
+        }
+
+        .product-id {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <h1 th:text="${shop.name}">Shop Name</h1>
 
-    <ul>
-        <li th:each="product : ${shop.products}">
+    <nav>
+        <a href="/gui/">Home</a> |
+        <a href="/gui/shops">All Shops</a>
+    </nav>
+
+    <hr>
+
+    <!-- Products Grid -->
+    <div class="product-grid" th:if="${!#lists.isEmpty(products)}">
+        <div class="product-card" th:each="product : ${products}">
+            <!-- Stock Badge -->
+            <span class="stock-badge"
+                  th:classappend="${product.stock == 0} ? 'stock-out' : (${product.stock <= 10} ? 'stock-low' : 'stock-high')"
+                  th:text="${product.stock == 0} ? 'Out of Stock' : (${product.stock <= 10} ? 'Low Stock' : 'In Stock')">
+            </span>
+
+            <!-- Product Image -->
             <img th:src="${product.imageUrl}" alt="Product Image" style="width: 50px; height: 50px; object-fit: cover; vertical-align: middle;">
-            <span th:text="${product.name} + ', ProductID: ' + ${product.id}"></span>y7
-        </li>
-    </ul>
+
+            <!-- Product Details -->
+            <div class="product-name" th:text="${product.name}">Product Name</div>
+            <div class="product-id">ID: <span th:text="${product.id}">1</span></div>
+
+            <div class="product-price">
+                $<span th:text="${#numbers.formatDecimal(product.price, 1, 2)}">0.00</span>
+            </div>
+
+            <!-- Stock Info with Icon -->
+            <div class="stock-info">
+                <span class="stock-icon"
+                      th:classappend="${product.stock == 0} ? 'out' : (${product.stock <= 10} ? 'low' : 'high')">
+                </span>
+                <span th:text="${product.stock == 0} ? 'Out of Stock' :
+                               (${product.stock <= 10} ? product.stock + ' left - Order soon!' :
+                               product.stock + ' in stock')">
+                    Stock info
+                </span>
+            </div>
+
+            <p class="text-muted" th:text="${product.description}">Description</p>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="section" style="text-align: center;" th:if="${#lists.isEmpty(products)}">
+        <h3>No Products Available</h3>
+        <p>This shop doesn't have any products yet.</p>
+    </div>
 </div>
 </body>
 </html>

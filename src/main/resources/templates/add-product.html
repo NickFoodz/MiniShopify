@@ -13,7 +13,7 @@
     <a href="/gui/">Back to Home</a>
     <hr>
 
-    <form th:action="@{/gui/add-product}" method="post">
+    <form th:action="@{/gui/merchant/add-product}" method="post" enctype="multipart/form-data">
         <label>Name:</label>
         <input type="text" name="name" required><br>
 
@@ -29,8 +29,12 @@
         <label>Stock:</label>
         <input type="number" name="stock" required><br>
 
-        <label>Image URL (optional):</label>
-        <input type="text" name="imageUrl" placeholder="Enter image URL or leave blank for default"><br>
+        <label>Image Option 1 - Upload File:</label>
+        <input type="file" name="imageFile" accept="image/*"><br>
+
+        <label>Image Option 2 - Enter URL:</label>
+        <input type="text" name="imageUrl" placeholder="Or enter image URL"><br>
+        <small>Note: If you upload a file, it will be used instead of the URL</small><br>
 
         <button type="submit">Add Product</button>
     </form>
