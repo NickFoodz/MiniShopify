@@ -71,6 +71,7 @@ public class GuiController {
                              @RequestParam double price,
                              @RequestParam int stock,
                              @RequestParam int shopID,
+                             @RequestParam (required = false) String imageUrl,
                              RedirectAttributes redirectAttributes) {
 
         long id = shopID;
@@ -84,6 +85,12 @@ public class GuiController {
             product.setDescription(description);
             product.setPrice(price);
             product.setStock(stock);
+
+            //Sets image to default if null
+            if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+                product.setImageUrl(imageUrl);
+            }
+
             Shop shop = shopRepository.findById(id).get();
             //productRepository.save(product);
             product.setShop(shop);

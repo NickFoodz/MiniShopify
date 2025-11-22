@@ -7,14 +7,21 @@ import org.example.models.Shop;
 import org.example.repository.MerchantRepository;
 import org.example.repository.ProductRepository;
 import org.example.repository.ShopRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.List;
 
@@ -65,6 +72,9 @@ public class MerchantController {
         return "redirect:/gui/merchant/profile"; // reload page after adding
     }
 
+    @Autowired
+    private FileUploadController fileUploadController;
+
     @PostMapping("/gui/merchant/add-product")
     public String addProduct(
             @RequestParam("name") String name,
@@ -72,8 +82,10 @@ public class MerchantController {
             @RequestParam("description") String description,
             @RequestParam("price") Double price,
             @RequestParam("stock") Integer stock,
+            @RequestParam(value = "imageUrl", required = false) String imageUrl,
+            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
             @AuthenticationPrincipal UserDetails user
-    ) {
+    ) throws IOException {
         // Find the merchant from the logged-in user
         var merchant = merchantRepository.findByEmail(user.getUsername())
                 .orElseThrow(() -> new RuntimeException("Merchant not found"));
@@ -89,6 +101,24 @@ public class MerchantController {
         product.setPrice(price);
         product.setStock(stock);
         product.setShop(shop);
+
+        // Handle image: prioritize file upload over URL
+        try {
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String uploadedImagePath = fileUploadController.saveUploadedFile(imageFile);
+                if (uploadedImagePath != null) {
+                    product.setImageUrl(uploadedImagePath);
+                }
+            } else if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+                product.setImageUrl(imageUrl);
+            }
+            // If neither provided, default image will be used from Product model
+        } catch (IOException e) {
+
+        }
+
+
+
 
         productRepository.save(product);
 
