@@ -4,11 +4,13 @@ import com.github.javafaker.Faker;
 import org.example.models.Merchant;
 import org.example.models.Product;
 import org.example.models.Shop;
+import org.example.repository.CustomerRepository;
 import org.example.repository.MerchantRepository;
 import org.example.repository.ProductRepository;
 import org.example.repository.ShopRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Random;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 @Configuration
@@ -98,4 +101,7 @@ public class    ShopAppApplication {
 
         };
     }
+
+
+
 }

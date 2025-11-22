@@ -36,10 +36,6 @@
                 <span th:text="'Shop Name: ' + ${shop.name} + ', Shop ID: ' + ${shop.id}"></span>
             </a>
             <span sec:authorize="hasRole('MERCHANT')">
-            <form th:action="@{/gui/remove-shop}" method="post" style="display:inline;">
-                <input type="hidden" name="shopId" th:value="${shop.id}">
-                <button type="submit" class="btn-danger">Remove Shop</button>
-            </form>
         </span>
             <ul>
                 <li th:each="product : ${shop.products}">
@@ -53,14 +49,6 @@
                         <button type="submit" th:disabled="${product.stock == 0}">
                             <span th:text="${product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}">Add to Cart</span>
                         </button>
-                    </form>
-                </span>
-
-                    <span sec:authorize="hasRole('MERCHANT')">
-                    <form th:action="@{/gui/remove-product}" method="post" style="display:inline;">
-                        <input type="hidden" name="productId" th:value="${product.id}">
-                        <input type="hidden" name="shopId" th:value="${shop.id}">
-                        <button type="submit" class="btn-danger">Remove Product</button>
                     </form>
                 </span>
                 </li>
