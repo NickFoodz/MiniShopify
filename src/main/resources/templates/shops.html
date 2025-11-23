@@ -177,8 +177,11 @@
             <!-- Shop Header -->
             <div class="shop-header">
                 <div>
-                    <div class="shop-name" th:text="${shop.name}">Shop Name</div>
-                    <div class="shop-id">ID: <span th:text="${shop.id}">1</span></div>
+                    <a th:href="@{/gui/shop/{id}(id=${shop.id})}" >
+                        <div class="shop-name" th:text="${shop.name}">Shop Name</div>
+                        <div class="shop-id">ID: <span th:text="${shop.id}">1</span></div>
+                    </a>
+
                 </div>
             </div>
 

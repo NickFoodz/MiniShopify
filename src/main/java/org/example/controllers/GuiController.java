@@ -169,7 +169,7 @@ public class GuiController {
         }
     }
 
-    @GetMapping("/shops/{id}")
+    @GetMapping("/shop/{id}")
     public String viewShop(@PathVariable Long id, Model model, RedirectAttributes ra) {
         try {
             if (shopRepository.findById(id).isEmpty()) {
