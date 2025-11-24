@@ -42,10 +42,18 @@ public class GuiController {
         return "index";
     }
 
-    // Shops page
+    // Shops page (with search)
     @GetMapping("/shops")
-    public String shops(Model model) {
-        model.addAttribute("shops", shopRepository.findAll());
+    public String shops(@RequestParam(value = "q", required = false) String q,
+                        Model model) {
+        Iterable<Shop> shops;
+        if (q == null || q.trim().isEmpty()) {
+            shops = shopRepository.findAll();
+        } else {
+            shops = shopRepository.findByNameContainingIgnoreCase(q.trim());
+        }
+        model.addAttribute("shops", shops);
+        model.addAttribute("q", q);
         return "shops";
     }
 

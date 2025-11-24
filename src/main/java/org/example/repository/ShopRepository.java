@@ -11,4 +11,6 @@ import java.util.List;
 public interface ShopRepository extends CrudRepository<Shop, Long> {
 
     List<Shop> findByMerchant(Merchant merchant);
+
+    List<Shop> findByNameContainingIgnoreCase(String name);
 }
