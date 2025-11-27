@@ -157,8 +157,8 @@
                       th:classappend="${product.stock == 0} ? 'out' : (${product.stock <= 10} ? 'low' : 'high')">
                 </span>
                 <span th:text="${product.stock == 0} ? 'Out of Stock' :
-                               (${product.stock <= 10} ? product.stock + ' left - Order soon!' :
-                               product.stock + ' in stock')">
+                               (${product.stock <= 10} ? ${product.stock} + ' left - Order soon!' :
+                               ${product.stock} + ' in stock')">
                     Stock info
                 </span>
             </div>
