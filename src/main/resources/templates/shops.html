@@ -242,6 +242,22 @@
         <p th:text="${error}"></p>
     </div>
 
+    <!-- Search shops -->
+    <form th:action="@{/gui/shops}" method="get" style="margin: 15px 0;">
+        <div style="display:flex; gap:10px; align-items:center;">
+            <input type="text"
+                   name="q"
+                   placeholder="Search shops by name..."
+                   th:value="${q}"
+                   style="flex:1; padding:10px 12px; border:1px solid var(--border-light);
+                      border-radius: var(--border-radius-sm); font-size:1em;" />
+
+            <button type="submit" class="btn btn-primary">Search</button>
+
+            <a th:href="@{/gui/shops}" class="btn btn-secondary">Clear</a>
+        </div>
+    </form>
+
     <!-- Shops Grid -->
     <div class="shops-grid">
         <div class="shop-card" th:each="shop : ${shops}">

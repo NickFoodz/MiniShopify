@@ -42,21 +42,44 @@ public class GuiController {
         return "index";
     }
 
-    // Shops page
+    // Shops page (with search)
     @GetMapping("/shops")
-    public String shops(@RequestParam(required = false) Map<String, String> sortMap, Model model) {
-        List<Shop> shops = (List<Shop>) shopRepository.findAll();
+    public String shops(@RequestParam(value = "q", required = false) String q,
+                        @RequestParam(required = false) Map<String, String> params,
+                        Model model) {
 
-        // Sort products for each shop based on individual sort preferences
+        // Extract search parameter and remove it from params
+        Map<String, String> sortMap = new HashMap<>();
+        if (params != null) {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                if (!entry.getKey().equals("q")) {
+                    sortMap.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+
+        // --- SEARCH LOGIC ---
+        List<Shop> shops;
+        if (q == null || q.trim().isEmpty()) {
+            shops = (List<Shop>) shopRepository.findAll();
+        } else {
+            shops = shopRepository.findByNameContainingIgnoreCase(q.trim());
+        }
+
+        // --- PER-SHOP SORTING LOGIC ---
         for (Shop shop : shops) {
             String sortBy = sortMap.getOrDefault(String.valueOf(shop.getId()), "name-asc");
             List<Product> sortedProducts = sortProducts(shop.getProducts(), sortBy);
+
             shop.getProducts().clear();
             shop.getProducts().addAll(sortedProducts);
         }
 
+        // Add to model
         model.addAttribute("shops", shops);
-        model.addAttribute("sortMap", sortMap != null ? sortMap : new HashMap<>());
+        model.addAttribute("q", q);
+        model.addAttribute("sortMap", sortMap);
+
         return "shops";
     }
 
