@@ -138,7 +138,7 @@ public class CheckoutController {
 
             // Simulate successful checkout
             // Clear the cart after successful checkout
-            cart.clearCart();
+            cart.getCartItems().clear();
             cartRepository.save(cart);
 
             // Add success message with order details
