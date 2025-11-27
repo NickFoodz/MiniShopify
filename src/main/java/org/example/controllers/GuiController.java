@@ -14,8 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/gui")
@@ -44,8 +44,19 @@ public class GuiController {
 
     // Shops page
     @GetMapping("/shops")
-    public String shops(Model model) {
-        model.addAttribute("shops", shopRepository.findAll());
+    public String shops(@RequestParam(required = false) Map<String, String> sortMap, Model model) {
+        List<Shop> shops = (List<Shop>) shopRepository.findAll();
+
+        // Sort products for each shop based on individual sort preferences
+        for (Shop shop : shops) {
+            String sortBy = sortMap.getOrDefault(String.valueOf(shop.getId()), "name-asc");
+            List<Product> sortedProducts = sortProducts(shop.getProducts(), sortBy);
+            shop.getProducts().clear();
+            shop.getProducts().addAll(sortedProducts);
+        }
+
+        model.addAttribute("shops", shops);
+        model.addAttribute("sortMap", sortMap != null ? sortMap : new HashMap<>());
         return "shops";
     }
 
@@ -71,7 +82,7 @@ public class GuiController {
                              @RequestParam double price,
                              @RequestParam int stock,
                              @RequestParam int shopID,
-                             @RequestParam (required = false) String imageUrl,
+                             @RequestParam(required = false) String imageUrl,
                              RedirectAttributes redirectAttributes) {
 
         long id = shopID;
@@ -112,8 +123,9 @@ public class GuiController {
 
     /**
      * Remove product from the shop
+     *
      * @param productId the product id to remove
-     * @param shopId the shop id to remove product from
+     * @param shopId    the shop id to remove product from
      * @return back to the shops page
      */
     @PostMapping("/remove-product")
@@ -134,7 +146,7 @@ public class GuiController {
             shopRepository.save(shop);
 
             return "redirect:/gui/shops";
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
             redirectAttributes.addFlashAttribute("path", "Path: /remove-product");
             return "redirect:/gui/custom-error";
@@ -144,13 +156,14 @@ public class GuiController {
 
     /**
      * Removes a shop from the repository.
+     *
      * @param shopId the shop id to remove
      * @return to the shops page
      */
     @PostMapping("/remove-shop")
     public String removeShop(@RequestParam long shopId, RedirectAttributes redirectAttributes) {
         //Need to add merchant id at some point if multiple exist
-        try{
+        try {
             //Add merchant here similar to below
             Shop shop = shopRepository.findById(shopId).
                     orElseThrow(() -> new IllegalArgumentException("Shop not found"));
@@ -162,7 +175,7 @@ public class GuiController {
 
             return "redirect:/gui/shops";
 
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
             redirectAttributes.addFlashAttribute("path", "Path: /remove-shop");
             return "redirect:/gui/custom-error";
@@ -179,11 +192,51 @@ public class GuiController {
             model.addAttribute("shop", shop);
             model.addAttribute("products", shop.getProducts());
             return "shop";
-        } catch (Exception e){
+        } catch (Exception e) {
             ra.addFlashAttribute("message", e.getMessage());
             return "redirect:/gui/custom-error";
         }
+    }
 
+    /**
+     * Sort products based on criteria
+     *
+     * @param products List of products to sort
+     * @param sortBy   Sorting criteria
+     * @return Sorted list of products
+     */
+    private List<Product> sortProducts(List<Product> products, String sortBy) {
+        Comparator<Product> comparator;
+
+        if (products == null) {
+            return null;
+        }
+        if (sortBy == null) {
+            comparator = Comparator.comparing(Product::getName);
+        } else {
+            switch (sortBy.toLowerCase()) {
+                case "price-asc":
+                    comparator = Comparator.comparing(Product::getPrice);
+                    break;
+                case "price-desc":
+                    comparator = Comparator.comparing(Product::getPrice).reversed();
+                    break;
+                case "name-desc":
+                    comparator = Comparator.comparing(Product::getName).reversed();
+                    break;
+                case "stock":
+                    comparator = Comparator.comparing(Product::getStock).reversed();
+                    break;
+                case "name-asc":
+                default:
+                    comparator = Comparator.comparing(Product::getName);
+                    break;
+            }
+        }
+
+        return products.stream()
+                .sorted(comparator)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/custom-error")
