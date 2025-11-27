@@ -227,12 +227,11 @@
     <nav>
         <a href="/gui/">Back to Home</a> |
         <span sec:authorize="hasRole('CUSTOMER')">
-            <a href="/gui/customer/cart">My Cart</a> |
+            <a href="/gui/customer/cart">My Cart</a>
         </span>
+        <span sec:authorize="hasRole('CUSTOMER')"> | </span>
         <a href="/gui/search">Search Products</a>
     </nav>
-
-    <hr>
 
     <!-- Success/Error Messages -->
     <div th:if="${message}" class="alert alert-success">
