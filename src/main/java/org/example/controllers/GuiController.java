@@ -92,57 +92,7 @@ public class GuiController {
         return "redirect:/gui/shops";
     }
 
-    // Add product page
-    @GetMapping("/add-product")
-    public String addProductForm() {
-        return "add-product";
-    }
 
-    // Add product
-    @PostMapping("/add-product")
-    public String addProduct(@RequestParam String name,
-                             @RequestParam String description,
-                             @RequestParam double price,
-                             @RequestParam int stock,
-                             @RequestParam int shopID,
-                             @RequestParam(required = false) String imageUrl,
-                             RedirectAttributes redirectAttributes) {
-
-        long id = shopID;
-
-        try {
-            if (shopRepository.findById(id).isEmpty()) {
-                throw new IllegalArgumentException("Shop with ID " + id + " not found!");
-            }
-            Product product = new Product();
-            product.setName(name);
-            product.setDescription(description);
-            product.setPrice(price);
-            product.setStock(stock);
-
-            //Sets image to default if null
-            if (imageUrl != null && !imageUrl.trim().isEmpty()) {
-                product.setImageUrl(imageUrl);
-            }
-
-            Shop shop = shopRepository.findById(id).get();
-            //productRepository.save(product);
-            product.setShop(shop);
-            shop.addProduct(product);
-            shopRepository.save(shop);
-
-            return "redirect:/gui/shops";
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
-            redirectAttributes.addFlashAttribute("path", "Path: /add-product");
-            return "redirect:/gui/custom-error";
-
-        }
-
-        // After adding product, needs to be added to shop and displayed (Someone can work on this from here)
-        // productRepository.save(product);
-        // return "redirect:/gui/";
-    }
 
     /**
      * Remove product from the shop
