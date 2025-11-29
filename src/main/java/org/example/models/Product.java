@@ -146,10 +146,18 @@ public class Product {
         this.shop = shop;
     }
 
+    /**
+     * Returns the imageUrl for the product
+     * @return String, the imageUrl for the product
+     */
     public String getImageUrl() {
         return imageUrl;
     }
 
+    /**
+     * Setter for the image url
+     * @param imageUrl, used to set the image
+     */
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }

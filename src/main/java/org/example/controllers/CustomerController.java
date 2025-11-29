@@ -16,6 +16,12 @@ public class CustomerController {
         this.customerRepository = customerRepository;
     }
 
+    /**
+     * Displays customer profile
+     * @param model, the current model for the page
+     * @param authentication, authenticated user
+     * @return the mapping for customer profile page
+     */
     @GetMapping("/gui/customer/profile")
     public String customerProfile(Model model, Authentication authentication) {
         String email = authentication.getName();
