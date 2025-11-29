@@ -116,8 +116,13 @@ public class MerchantController {
                 }
                 // If neither provided, default image will be used from Product model
             } catch (IOException e) {
+                List<Shop> shops = shopRepository.findByMerchant(merchant);
                 model.addAttribute("errorMessage", e.getMessage());
                 model.addAttribute("merchant", merchant);
+                model.addAttribute("shops", shops);
+
+                return "merchant-profile";
+
             }
 
 
