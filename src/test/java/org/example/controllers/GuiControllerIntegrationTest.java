@@ -91,76 +91,86 @@ class GuiControllerIntegrationTest {
         assertEquals("New Electronics Store", foundShop.getName());
     }
 
-    @Test
+
 /**
+ *Tests will need to be refactored (add product doesn't exist anymore)
  * Tests the behavior of testAddProductForm().
+ *
+ * @Test
+ * void testAddProductForm() throws Exception {
+ *         mockMvc.perform(get("/gui/add-product"))
+ *                 .andExpect(status().isOk())
+ *                 .andExpect(view().name("add-product"))
+ *                 .andExpect(content().string(containsString("Add a Product")));
+ *     }
  */
-    void testAddProductForm() throws Exception {
-        mockMvc.perform(get("/gui/add-product"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("add-product"))
-                .andExpect(content().string(containsString("Add a Product")));
-    }
 
-    @Test
 /**
+ * Tests will need to be refactored (add product doesn't exist anymore)
  * Tests the behavior of testAddProductSuccess().
+ *
+ * @Test
+ * void testAddProductSuccess() throws Exception {
+ *         Shop shop = new Shop();
+ *         shop.setName("Tech Store");
+ *         Shop savedShop = shopRepository.save(shop);
+ *
+ *         mockMvc.perform(post("/gui/add-product")
+ *                         .param("name", "Laptop")
+ *                         .param("description", "Gaming laptop")
+ *                         .param("price", "1299.99")
+ *                         .param("stock", "15")
+ *                         .param("shopID", savedShop.getId().toString()))
+ *                 .andExpect(status().is3xxRedirection())
+ *                 .andExpect(redirectedUrl("/gui/shops"));
+ *
+ *         Iterable<Product> products = productRepository.findAll();
+ *         long count = 0;
+ *         Product foundProduct = null;
+ *         for (Product p : products) {
+ *             count++;
+ *             foundProduct = p;
+ *         }
+ *
+ *         // Validate expected outcomes
+ *         assertEquals(1, count);
+ *         // Validate expected outcomes
+ *         assertEquals("Laptop", foundProduct.getName());
+ *         // Validate expected outcomes
+ *         assertEquals(1299.99, foundProduct.getPrice(), 0.01);
+ *         // Validate expected outcomes
+ *         assertEquals(15, foundProduct.getStock());
+ *     }
  */
-    void testAddProductSuccess() throws Exception {
-        Shop shop = new Shop();
-        shop.setName("Tech Store");
-        Shop savedShop = shopRepository.save(shop);
 
-        mockMvc.perform(post("/gui/add-product")
-                        .param("name", "Laptop")
-                        .param("description", "Gaming laptop")
-                        .param("price", "1299.99")
-                        .param("stock", "15")
-                        .param("shopID", savedShop.getId().toString()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/gui/shops"));
 
-        Iterable<Product> products = productRepository.findAll();
-        long count = 0;
-        Product foundProduct = null;
-        for (Product p : products) {
-            count++;
-            foundProduct = p;
-        }
 
-        // Validate expected outcomes
-        assertEquals(1, count);
-        // Validate expected outcomes
-        assertEquals("Laptop", foundProduct.getName());
-        // Validate expected outcomes
-        assertEquals(1299.99, foundProduct.getPrice(), 0.01);
-        // Validate expected outcomes
-        assertEquals(15, foundProduct.getStock());
-    }
-
-    @Test
 /**
+ *
  * Tests the behavior of testAddProductInvalidShop().
+ * Tests will need to be refactored (add product doesn't exist anymore)
+ *@Test
+ * void testAddProductInvalidShop() throws Exception {
+ *         mockMvc.perform(post("/gui/add-product")
+ *                         .param("name", "Laptop")
+ *                         .param("description", "Gaming laptop")
+ *                         .param("price", "1299.99")
+ *                         .param("stock", "15")
+ *                         .param("shopID", "999"))
+ *                 .andExpect(status().is3xxRedirection())
+ *                 .andExpect(redirectedUrl("/gui/custom-error"));
+ *
+ *         Iterable<Product> products = productRepository.findAll();
+ *         long count = 0;
+ *         for (Product p : products) {
+ *             count++;
+ *         }
+ *
+ *         // Validate expected outcomes
+ *         assertEquals(0, count);
+ *     }
  */
-    void testAddProductInvalidShop() throws Exception {
-        mockMvc.perform(post("/gui/add-product")
-                        .param("name", "Laptop")
-                        .param("description", "Gaming laptop")
-                        .param("price", "1299.99")
-                        .param("stock", "15")
-                        .param("shopID", "999"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/gui/custom-error"));
 
-        Iterable<Product> products = productRepository.findAll();
-        long count = 0;
-        for (Product p : products) {
-            count++;
-        }
-
-        // Validate expected outcomes
-        assertEquals(0, count);
-    }
 
     @Test
 /**
