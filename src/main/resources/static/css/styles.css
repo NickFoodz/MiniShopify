@@ -178,6 +178,7 @@ nav a {
     background: rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
+    display: inline-block;
 }
 
 nav a::before {
@@ -189,6 +190,7 @@ nav a::before {
     height: 100%;
     background: rgba(255, 255, 255, 0.2);
     transition: left 0.3s;
+    z-index: -1;
 }
 
 nav a:hover::before {
@@ -198,6 +200,11 @@ nav a:hover::before {
 nav a:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
+}
+
+nav span {
+    display: inline-flex;
+    align-items: center;
 }
 
 /* ========================================
@@ -961,3 +968,6 @@ table td {
     padding: 6px 12px;
     font-size: 0.85em;
 }
+
+
+
