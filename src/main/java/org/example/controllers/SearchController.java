@@ -20,6 +20,12 @@ public class SearchController {
         this.productRepo = productRepo;
     }
 
+    /**
+     * Handles the search mechanism when looking for specific products
+     * @param q, the Query used to find products
+     * @param model, the current model
+     * @return the list of products matching the description
+     */
     @GetMapping
     public String search(@RequestParam(required = false) String q, Model model) {
 

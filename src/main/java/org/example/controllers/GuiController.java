@@ -37,12 +37,21 @@ public class GuiController {
     }
 
     // Home page
+
+    /**
+     * Processes initial landing page request
+     *
+     * @return the index page of the app
+     */
     @GetMapping("/")
     public String home() {
         return "index";
     }
 
     // Shops page (with search)
+    /**
+     * Processes shops page request
+     */
     @GetMapping("/shops")
     public String shops(@RequestParam(value = "q", required = false) String q,
                         @RequestParam(required = false) Map<String, String> params,
@@ -84,6 +93,9 @@ public class GuiController {
     }
 
     // Adding a shop
+    /**
+     * Processes adding shops request
+     */
     @PostMapping("/shops")
     public String addShop(@RequestParam String name) {
         Shop shop = new Shop();
@@ -92,6 +104,56 @@ public class GuiController {
         return "redirect:/gui/shops";
     }
 
+    // Add product page
+    /**
+     * Processes request to add products page
+     *
+     * @return add products page
+     */
+    @GetMapping("/add-product")
+    public String addProductForm() {
+        return "add-product";
+    }
+
+    // Add product
+
+    /**
+     * Handles request for adding a product
+     *
+     * @param name, name of the product
+     * @param description, description of the product
+     * @param price, price of the product
+     * @param stock, stock amount of the product
+     * @param shopID, shopID of the product
+     * @param imageUrl, image url of the product
+     * @param redirectAttributes
+     * @return Back to the shops page with new item added
+     */
+    @PostMapping("/add-product")
+    public String addProduct(@RequestParam String name,
+                             @RequestParam String description,
+                             @RequestParam double price,
+                             @RequestParam int stock,
+                             @RequestParam int shopID,
+                             @RequestParam(required = false) String imageUrl,
+                             RedirectAttributes redirectAttributes) {
+
+        long id = shopID;
+
+        try {
+            if (shopRepository.findById(id).isEmpty()) {
+                throw new IllegalArgumentException("Shop with ID " + id + " not found!");
+            }
+            Product product = new Product();
+            product.setName(name);
+            product.setDescription(description);
+            product.setPrice(price);
+            product.setStock(stock);
+
+            //Sets image to default if null
+            if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+                product.setImageUrl(imageUrl);
+            }
 
 
     /**
@@ -155,6 +217,13 @@ public class GuiController {
         }
     }
 
+    /**
+     * Handles viewing a specific shop
+     * @param id, the shop id
+     * @param model, the current model
+     * @param ra
+     * @return specific shop page with unique {id}
+     */
     @GetMapping("/shop/{id}")
     public String viewShop(@PathVariable Long id, Model model, RedirectAttributes ra) {
         try {
@@ -212,22 +281,41 @@ public class GuiController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Custom error handler
+     * @return the error page
+     */
     @GetMapping("/custom-error")
     public String showErrorPage() {
         return "custom-error";
     }
 
+    /**
+     * Handles the request to reach the login page
+     * @return the login page for users
+     */
     @GetMapping("/login")
     public String login() {
         return "login"; // Looks for login.html in templates/
     }
 
+    /**
+     * Handles requests for the registration page
+     * @param model
+     * @return the merchant registration page
+     */
     @GetMapping("/register/merchant")
     public String registerMerchant(Model model) {
         model.addAttribute("merchant", new Merchant());
         return "register-merchant";
     }
 
+    /**
+     * Processes the users registration as a merchant and verifies that
+     * registration was successful
+     * @param merchant, the merchant to be registered
+     * @return, successful logins will bring users to dashboard
+     */
     @PostMapping("/register/merchant")
     public String processMerchant(Merchant merchant) {
         merchant.setPassword(passwordEncoder.encode(merchant.getPassword()));
@@ -237,12 +325,23 @@ public class GuiController {
 
     }
 
+    /**
+     * Handles request to customer registration page
+     * @param model, the current model
+     * @return, the customer registration page
+     */
     @GetMapping("/register/customer")
     public String registerCustomer(Model model) {
         model.addAttribute("customer", new Customer());
         return "register-customer";
     }
 
+    /**
+     * Processes the users request to register as a customer
+     * and verifies registration was successful
+     * @param customer, the customer to be registered
+     * @return,
+     */
     @PostMapping("/register/customer")
     public String processCustomer(Customer customer) {
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
@@ -251,6 +350,12 @@ public class GuiController {
         return "redirect:/gui/login?registered";
     }
 
+    /**
+     * Handles request to visit users dashboard, customers and merchants are
+     * redirected accordingly
+     * @param authentication, the authenticated user
+     * @return, the correct dashboard depending on user type
+     */
     @GetMapping("/dashboard")
     public String dashboardRedirect(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();

@@ -33,34 +33,67 @@ public class CartItem {
     }
 
     // Getters and Setters
+
+    /**
+     * Returns the Id of the cart item
+     * @return Long the id of the cart item
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Sets the id of the cart item
+     * @param id a set id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Returns the cart in which the items are in
+     * @return Cart
+     */
     public Cart getCart() {
         return cart;
     }
 
+    /**
+     * Sets the cart which the items are in
+     * @param cart
+     */
     public void setCart(Cart cart) {
         this.cart = cart;
     }
 
+    /**
+     * Get the product
+     * @return the product
+     */
     public Product getProduct() {
         return product;
     }
 
+    /**
+     * Setter for the product
+     * @param product
+     */
     public void setProduct(Product product) {
         this.product = product;
     }
 
+    /**
+     * Getter for the number of product in the cart
+     * @return int, number of x items in cart
+     */
     public int getQuantity() {
         return quantity;
     }
 
+    /**
+     * Setter for the number of items in the cart
+     * @param quantity
+     */
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }

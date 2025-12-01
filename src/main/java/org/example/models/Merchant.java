@@ -122,7 +122,6 @@ public class Merchant {
      * Returns the type of user
      * @return UserType, the type of user
      */
-
     public UserType getUserType() {
         return this.userType;
     }

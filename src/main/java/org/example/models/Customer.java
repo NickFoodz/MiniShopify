@@ -96,10 +96,18 @@ public class Customer {
         return this.userType;
     }
 
+    /**
+     * Getter for the customers cart
+     * @return cart, the customers cart
+     */
     public Cart getCart() {
         return cart;
     }
 
+    /**
+     * Setter for the customers cart
+     * @param cart, used to set the cart
+     */
     public void setCart(Cart cart) {
         this.cart = cart;
     }

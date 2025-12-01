@@ -226,6 +226,7 @@ button,
     overflow: hidden;
     display: inline-block;
     text-decoration: none;
+    margin-top: 10px;
 }
 
 button::before,
