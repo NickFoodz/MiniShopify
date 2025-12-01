@@ -92,12 +92,24 @@ public class CustomUserDetails implements UserDetails {
         return userType;
     }
 
+    /**
+     * Checks to see if the account is not expired
+     * @return Boolean value to determine if account is expired or not, true if yes
+     */
     @Override
     public boolean isAccountNonExpired() { return true; }
 
+    /**
+     * Checks to see if credentials are expired or not
+     * @return Boolean value to see if credentials are valid, true if yes
+     */
     @Override
     public boolean isCredentialsNonExpired() { return true; }
 
+    /**
+     * Checks to see if the account is enabled and not deactivated
+     * @return Boolean value to determine if the account is enabled, true if yes
+     */
     @Override
     public boolean isEnabled() { return true; }
 }

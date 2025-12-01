@@ -40,6 +40,12 @@ public class MerchantController {
         this.productRepository = productRepository;
     }
 
+    /**
+     * Adds attributes to merchant profile with the merchants details
+     * @param model
+     * @param principal, the principal user
+     * @return the merchant profile page
+     */
     @Transactional
     @GetMapping("/gui/merchant/profile")
     public String merchantProfile(Model model, Principal principal) {
@@ -60,6 +66,12 @@ public class MerchantController {
         return "merchant-profile"; // Thymeleaf template
     }
 
+    /**
+     * Handles the add shops request from the merchant profile
+     * @param newShop, the new shop to be added
+     * @param principal, the principal user (merchant)
+     * @return the merchant profile page with the new shop
+     */
     @PostMapping("/gui/merchant/add-shop")
     public String addShop(@ModelAttribute("newShop") Shop newShop, Principal principal) {
         String email = principal.getName();
@@ -75,6 +87,19 @@ public class MerchantController {
     @Autowired
     private FileUploadController fileUploadController;
 
+    /**
+     * Handles the adding product to shops request from merchant page
+     * @param name, name of the product
+     * @param shopId, shop id of the product
+     * @param description, description of the product
+     * @param price, price of the product
+     * @param stock, stock of the product
+     * @param imageUrl, imageUrl of the product
+     * @param imageFile, imageFile of the product
+     * @param user, the current user
+     * @return the merchant profile page updated with new products
+     * @throws IOException
+     */
     @PostMapping("/gui/merchant/add-product")
     public String addProduct(
             @RequestParam("name") String name,
@@ -117,14 +142,17 @@ public class MerchantController {
 
         }
 
-
-
-
         productRepository.save(product);
 
         return "redirect:/gui/merchant/profile";
     }
 
+    /**
+     * Handles the remove shop request for a merchant
+     * @param shopId, the shop Id to be removed
+     * @param principal, the principal user (merchant)
+     * @return the merchant profile with the updated list of shopp
+     */
     @PostMapping("/gui/merchant/remove-shop")
     public String removeShop(@RequestParam Long shopId, Principal principal) {
 
@@ -143,6 +171,13 @@ public class MerchantController {
         return "redirect:/gui/merchant/profile";
     }
 
+    /**
+     * Handles the reqyest to remove a product from a specific shop
+     * @param productId, the product id that is to be removed
+     * @param shopId, the shop id corresponding to the product
+     * @param principal, the principal user (merchant)
+     * @return the merchant profile page updated with the product removed
+     */
     @PostMapping("/gui/merchant/remove-product")
     public String removeProduct(
             @RequestParam Long productId,
