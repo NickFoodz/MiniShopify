@@ -129,7 +129,7 @@ Mini-Shopify is a web-based e-commerce platform built with Spring Boot that allo
 - **Orphan Removal:** Enabled on Shop products and Cart items
 
 ## UML Class Diagram
-<img width="716" height="1413" alt="image" src="https://github.com/user-attachments/assets/ff5b9d09-efa5-4021-9c24-8da3b40094f4" />
+<img width="716" height="1413" alt="image" src="https://github.com/ashkkumar/MiniShopify/blob/main/Diagrams/class%20diagram%20sprint%203.png" />
 
 
 ### Class Diagram Legend
@@ -145,6 +145,7 @@ src/
 │   │   │   ├── CartController.java
 │   │   │   ├── CheckoutController.java
 │   │   │   ├── CustomerController.java
+│   │   │   ├── FileUploadController.java
 │   │   │   ├── GuiController.java
 │   │   │   ├── MerchantController.java
 │   │   │   ├── ProductController.java
@@ -191,7 +192,9 @@ src/
         ├── controllers/
         │   ├── CheckoutControllerTest.java
         │   ├── GuiControllerIntegrationTest.java
-        │   └── RestApiIntegrationTest.java
+        │   ├── GuiControllerSortProductsTest.java
+        │   ├── RestApiIntegrationTest.java
+        │   └── ShopsSortingIntegrationTest.java
         ├── models/
         │   ├── CartItemTest.java
         │   ├── CartTest.java
@@ -303,7 +306,7 @@ mvn test
 * Customer routes: Require ROLE_CUSTOMER
 * Public routes: No authentication required
 
-## Current Sprint Status (Sprint 2)
+## Current Sprint Status (Sprint 3)
 ### Completed
 - Project setup with CI/CD pipeline
 - Azure deployment configuration
@@ -320,19 +323,10 @@ mvn test
 - Shopping cart implementation
 - Checkout process (simulated payment)
 - Search functionality (by shop name and category)
-
-### Planned for Next Sprint
-* Shop categories functionality
-* Order history tracking for customers
-* Product reviews and ratings
-* Advanced search with filters (price range, categories)
-* Merchant analytics dashboard
-* Email notifications for order confirmations
-* Product images upload and display
-* Wishlist functionality
-* Multiple payment methods simulation
-* Invoice generation
-* Admin panel for system management
+- Product images upload and display
+- Product sorting for shops
+- Individual shop page
+- UI Refinement
 
 ## Team Members
 - Ajen Srisivapalan
