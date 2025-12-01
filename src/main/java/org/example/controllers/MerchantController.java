@@ -109,42 +109,61 @@ public class MerchantController {
             @RequestParam("stock") Integer stock,
             @RequestParam(value = "imageUrl", required = false) String imageUrl,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
-            @AuthenticationPrincipal UserDetails user
+            @AuthenticationPrincipal UserDetails user,
+            Model model
     ) throws IOException {
         // Find the merchant from the logged-in user
         var merchant = merchantRepository.findByEmail(user.getUsername())
                 .orElseThrow(() -> new RuntimeException("Merchant not found"));
 
-        // Find the shop AND make sure it belongs to this merchant
-        Shop shop = shopRepository.findById(shopId)
-                .filter(s -> s.getMerchant().equals(merchant))
-                .orElseThrow(() -> new RuntimeException("Shop not found or not yours"));
-
-        Product product = new Product();
-        product.setName(name);
-        product.setDescription(description);
-        product.setPrice(price);
-        product.setStock(stock);
-        product.setShop(shop);
-
-        // Handle image: prioritize file upload over URL
         try {
-            if (imageFile != null && !imageFile.isEmpty()) {
-                String uploadedImagePath = fileUploadController.saveUploadedFile(imageFile);
-                if (uploadedImagePath != null) {
-                    product.setImageUrl(uploadedImagePath);
+            // Find the shop AND make sure it belongs to this merchant
+            Shop shop = shopRepository.findById(shopId)
+                    .filter(s -> s.getMerchant().equals(merchant))
+                    .orElseThrow(() -> new RuntimeException("Shop not found or not yours"));
+
+            Product product = new Product();
+            product.setName(name);
+            product.setDescription(description);
+            product.setPrice(price);
+            product.setStock(stock);
+            product.setShop(shop);
+
+            // Handle image: prioritize file upload over URL
+            try {
+                if (imageFile != null && !imageFile.isEmpty()) {
+                    String uploadedImagePath = fileUploadController.saveUploadedFile(imageFile);
+                    if (uploadedImagePath != null) {
+                        product.setImageUrl(uploadedImagePath);
+                    }
+                } else if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+                    product.setImageUrl(imageUrl);
                 }
-            } else if (imageUrl != null && !imageUrl.trim().isEmpty()) {
-                product.setImageUrl(imageUrl);
+                // If neither provided, default image will be used from Product model
+            } catch (IOException e) {
+                List<Shop> shops = shopRepository.findByMerchant(merchant);
+                model.addAttribute("errorMessage", e.getMessage());
+                model.addAttribute("merchant", merchant);
+                model.addAttribute("shops", shops);
+
+                return "merchant-profile";
+
             }
-            // If neither provided, default image will be used from Product model
-        } catch (IOException e) {
 
+
+            productRepository.save(product);
+
+            return "redirect:/gui/merchant/profile";
+
+        } catch (RuntimeException e) {
+            List<Shop> shops = shopRepository.findByMerchant(merchant);
+
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("merchant", merchant);
+            model.addAttribute("shops", shops);
+
+            return "merchant-profile";
         }
-
-        productRepository.save(product);
-
-        return "redirect:/gui/merchant/profile";
     }
 
     /**
