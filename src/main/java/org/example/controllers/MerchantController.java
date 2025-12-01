@@ -161,7 +161,6 @@ public class MerchantController {
             model.addAttribute("errorMessage", e.getMessage());
             model.addAttribute("merchant", merchant);
             model.addAttribute("shops", shops);
-        productRepository.save(product);
 
             return "merchant-profile";
         }

@@ -117,43 +117,7 @@ public class GuiController {
 
     // Add product
 
-    /**
-     * Handles request for adding a product
-     *
-     * @param name, name of the product
-     * @param description, description of the product
-     * @param price, price of the product
-     * @param stock, stock amount of the product
-     * @param shopID, shopID of the product
-     * @param imageUrl, image url of the product
-     * @param redirectAttributes
-     * @return Back to the shops page with new item added
-     */
-    @PostMapping("/add-product")
-    public String addProduct(@RequestParam String name,
-                             @RequestParam String description,
-                             @RequestParam double price,
-                             @RequestParam int stock,
-                             @RequestParam int shopID,
-                             @RequestParam(required = false) String imageUrl,
-                             RedirectAttributes redirectAttributes) {
 
-        long id = shopID;
-
-        try {
-            if (shopRepository.findById(id).isEmpty()) {
-                throw new IllegalArgumentException("Shop with ID " + id + " not found!");
-            }
-            Product product = new Product();
-            product.setName(name);
-            product.setDescription(description);
-            product.setPrice(price);
-            product.setStock(stock);
-
-            //Sets image to default if null
-            if (imageUrl != null && !imageUrl.trim().isEmpty()) {
-                product.setImageUrl(imageUrl);
-            }
 
 
     /**
