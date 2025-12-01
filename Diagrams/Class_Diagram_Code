@@ -5,6 +5,8 @@ entity Merchant {
   - Long id
   - String name
   - String email
+  - String password
+  - UserType userType
   - List<Shop> shops
   --
   + Long getId()
@@ -13,8 +15,12 @@ entity Merchant {
   + void setName(String name)
   + String getEmail()
   + void setEmail(String email)
+  + String getPassword()
+  + void setPassword(String password)
+  + UserType getUserType()
   + List<Shop> getShops()
   + void setShops(List<Shop> shops)
+  + void removeShop(long shopId)
 }
 
 entity Shop {
@@ -43,6 +49,7 @@ entity Product {
   - String description
   - double price
   - int stock
+  - String imageUrl
   - Shop shop
   --
   + Long getId()
@@ -55,14 +62,19 @@ entity Product {
   + void setPrice(double price)
   + int getStock()
   + void setStock(int stock)
+  + String getImageUrl()
+  + void setImageUrl(String imageUrl)
   + Shop getShop()
   + void setShop(Shop shop)
+  + void addStock(int stockToAdd)
+  + boolean removeStock(int stockToRemove)
 }
 
 entity Customer {
   - Long id
   - String name
   - String email
+  - String password
   - UserType userType
   - Cart cart
   --
@@ -72,6 +84,8 @@ entity Customer {
   + void setName(String name)
   + String getEmail()
   + void setEmail(String email)
+  + String getPassword()
+  + void setPassword(String password)
   + UserType getUserType()
   + Cart getCart()
   + void setCart(Cart cart)
@@ -80,11 +94,19 @@ entity Customer {
 entity Cart {
   - Long cartID
   - List<CartItem> cartItems
+  - Customer customer
   --
   + Long getCartID()
+  + void setCartID(Long cartID)
+  + Customer getCustomer()
+  + void setCustomer(Customer customer)
   + List<CartItem> getCartItems()
-  + void addItem(CartItem item)
-  + void removeItem(Long itemId)
+  + void setCartItems(List<CartItem> cartItems)
+  + boolean addProduct(Product product, int quantity)
+  + boolean removeProduct(Product product)
+  + boolean reduceProductQuantity(Product product, int quantity)
+  + double calculateTotal()
+  + void clearCart()
 }
 
 entity CartItem {
@@ -108,11 +130,9 @@ enum UserType {
   MERCHANT
 }
 
-
 ' Relationships
 Merchant "1" -- "0..*" Shop : owns >
 Shop "1" -- "0..*" Product : contains >
-
 Customer "1" -- "1" Cart : has >
 Cart "1" -- "0..*" CartItem : contains >
 CartItem "*" --> "1" Product : references >
